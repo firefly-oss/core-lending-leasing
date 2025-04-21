@@ -1,7 +1,7 @@
 package com.catalis.core.lending.leasing.interfaces.dtos.event.v1;
 
-import com.catalis.common.core.filters.FilterableId;
 import com.catalis.core.lending.leasing.interfaces.enums.event.v1.EventTypeEnum;
+import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
