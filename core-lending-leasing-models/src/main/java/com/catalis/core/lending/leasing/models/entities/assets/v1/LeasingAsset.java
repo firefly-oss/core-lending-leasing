@@ -1,6 +1,5 @@
 package com.catalis.core.lending.leasing.models.entities.assets.v1;
 
-import com.catalis.core.lending.leasing.interfaces.enums.assets.v1.AssetTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +25,8 @@ public class LeasingAsset {
     @Column("leasing_agreement_id")
     private Long leasingAgreementId; // FK to LeasingAgreement
 
-    @Column("asset_type")
-    private AssetTypeEnum assetType;
+    @Column("asset_type_id")
+    private Long assetTypeId;
 
     @Column("asset_description")
     private String assetDescription;

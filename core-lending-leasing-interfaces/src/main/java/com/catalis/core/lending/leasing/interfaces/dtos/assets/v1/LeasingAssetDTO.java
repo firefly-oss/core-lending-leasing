@@ -1,6 +1,5 @@
 package com.catalis.core.lending.leasing.interfaces.dtos.assets.v1;
 
-import com.catalis.core.lending.leasing.interfaces.enums.assets.v1.AssetTypeEnum;
 import com.catalis.core.utils.annotations.FilterableId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,9 @@ public class LeasingAssetDTO {
     @FilterableId
     private Long leasingAgreementId;
 
-    private AssetTypeEnum assetType;
+    @FilterableId
+    private Long assetTypeId;
+
     private String assetDescription;
     private String assetSerialNumber;
     private BigDecimal assetValue;
