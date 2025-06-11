@@ -1,0 +1,1947 @@
+openapi: 3.0.1
+info:
+  title: core-lending-leasing
+  description: Leasing Core Application
+  contact:
+    name: Catalis Development
+    email: dev@catalis.com
+  version: 1.0.0
+servers:
+  - url: 'http://core.catalis.vc/leasing'
+    description: Development Environment
+  - url: /
+    description: Local Development Environment
+tags:
+  - name: LeasePaymentRecord
+    description: Payment records for a finance lease agreement
+  - name: LeaseServiceEvent
+    description: Maintenance/repair events for a leased asset
+  - name: LeaseInstallmentSchedule
+    description: Installment schedule for a finance lease agreement
+  - name: LeaseEndOption
+    description: End-of-lease purchase or return option for a finance lease
+  - name: LeasingAsset
+    description: Operations on leased assets under a leasing agreement
+  - name: LeasingAgreement
+    description: Operations on finance leasing agreements
+paths:
+  '/api/v1/leasing-agreements/{leasingAgreementId}':
+    get:
+      tags:
+        - LeasingAgreement
+      summary: Get a leasing agreement by ID
+      operationId: getById
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAgreementDTO'
+    put:
+      tags:
+        - LeasingAgreement
+      summary: Update a leasing agreement
+      operationId: update
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingAgreementDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAgreementDTO'
+    delete:
+      tags:
+        - LeasingAgreement
+      summary: Delete a leasing agreement
+      operationId: delete
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/leasing-agreements/{leasingAgreementId}/payments/{leasePaymentRecordId}':
+    get:
+      tags:
+        - LeasePaymentRecord
+      summary: Get a payment record by ID
+      operationId: getById_1
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasePaymentRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasePaymentRecordDTO'
+    put:
+      tags:
+        - LeasePaymentRecord
+      summary: Update a lease payment record
+      operationId: update_1
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasePaymentRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasePaymentRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasePaymentRecordDTO'
+    delete:
+      tags:
+        - LeasePaymentRecord
+      summary: Delete a lease payment record
+      operationId: delete_1
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasePaymentRecordId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/leasing-agreements/{leasingAgreementId}/installments/{leaseInstallmentScheduleId}':
+    get:
+      tags:
+        - LeaseInstallmentSchedule
+      summary: Get an installment schedule entry by ID
+      operationId: getById_2
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseInstallmentScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+    put:
+      tags:
+        - LeaseInstallmentSchedule
+      summary: Update an installment schedule record
+      operationId: update_2
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseInstallmentScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+    delete:
+      tags:
+        - LeaseInstallmentSchedule
+      summary: Delete an installment schedule entry
+      operationId: delete_2
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseInstallmentScheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/leasing-agreements/{leasingAgreementId}/end-option':
+    get:
+      tags:
+        - LeaseEndOption
+      summary: Get the end-of-lease option details for an agreement
+      operationId: getByAgreement
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseEndOptionDTO'
+    put:
+      tags:
+        - LeaseEndOption
+      summary: Update the end-of-lease option record
+      operationId: update_3
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseEndOptionDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseEndOptionDTO'
+    post:
+      tags:
+        - LeaseEndOption
+      summary: Create the end-of-lease option record (purchase option scenario)
+      operationId: create_3
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseEndOptionDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseEndOptionDTO'
+    delete:
+      tags:
+        - LeaseEndOption
+      summary: Delete the end-of-lease option record
+      operationId: delete_3
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}':
+    get:
+      tags:
+        - LeasingAsset
+      summary: Get a leased asset by ID
+      operationId: getById_3
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAssetDTO'
+    put:
+      tags:
+        - LeasingAsset
+      summary: Update a leased asset record
+      operationId: update_4
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingAssetDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAssetDTO'
+    delete:
+      tags:
+        - LeasingAsset
+      summary: Delete a leased asset record
+      operationId: delete_4
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events/{leaseServiceEventId}':
+    get:
+      tags:
+        - LeaseServiceEvent
+      summary: Get a service event by ID
+      operationId: getById_4
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseServiceEventDTO'
+    put:
+      tags:
+        - LeaseServiceEvent
+      summary: Update a service event record
+      operationId: update_5
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseServiceEventDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseServiceEventDTO'
+    delete:
+      tags:
+        - LeaseServiceEvent
+      summary: Delete a service event record
+      operationId: delete_5
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leaseServiceEventId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /api/v1/leasing-agreements:
+    get:
+      tags:
+        - LeasingAgreement
+      summary: List or search leasing agreements
+      operationId: findAll
+      parameters:
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.contractId
+          in: query
+          description: Exact filter for contract id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.customerId
+          in: query
+          description: Exact filter for customer id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.agreementStatus
+          in: query
+          description: Exact filter for agreement status
+          required: false
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RESTRUCTURED
+              - CLOSED
+              - DEFAULTED
+              - TERMINATED
+        - name: filters.startDate
+          in: query
+          description: Exact filter for start date
+          required: false
+          schema:
+            type: string
+        - name: filters.endDate
+          in: query
+          description: Exact filter for end date
+          required: false
+          schema:
+            type: string
+        - name: filters.principalAmount
+          in: query
+          description: Exact filter for principal amount
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[principalAmount].from'
+          in: query
+          description: Filter principal amount from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[principalAmount].to'
+          in: query
+          description: Filter principal amount to value
+          required: false
+          schema:
+            type: string
+        - name: filters.interestRate
+          in: query
+          description: Exact filter for interest rate
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[interestRate].from'
+          in: query
+          description: Filter interest rate from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[interestRate].to'
+          in: query
+          description: Filter interest rate to value
+          required: false
+          schema:
+            type: string
+        - name: filters.residualValue
+          in: query
+          description: Exact filter for residual value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[residualValue].from'
+          in: query
+          description: Filter residual value from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[residualValue].to'
+          in: query
+          description: Filter residual value to value
+          required: false
+          schema:
+            type: string
+        - name: filters.purchaseOption
+          in: query
+          description: Exact filter for purchase option
+          required: false
+          schema:
+            type: boolean
+        - name: filters.remarks
+          in: query
+          description: Exact filter for remarks
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseLeasingAgreementDTO'
+    post:
+      tags:
+        - LeasingAgreement
+      summary: Create a new leasing agreement
+      operationId: create
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingAgreementDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAgreementDTO'
+  '/api/v1/leasing-agreements/{leasingAgreementId}/payments':
+    get:
+      tags:
+        - LeasePaymentRecord
+      summary: List or search lease payments for an agreement
+      operationId: findAll_1
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.leasingAgreementId
+          in: query
+          description: Exact filter for leasing agreement id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.leaseInstallmentScheduleId
+          in: query
+          description: Exact filter for lease installment schedule id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.paymentAmount
+          in: query
+          description: Exact filter for payment amount
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[paymentAmount].from'
+          in: query
+          description: Filter payment amount from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[paymentAmount].to'
+          in: query
+          description: Filter payment amount to value
+          required: false
+          schema:
+            type: string
+        - name: filters.paymentDate
+          in: query
+          description: Exact filter for payment date
+          required: false
+          schema:
+            type: string
+        - name: filters.isPartialPayment
+          in: query
+          description: Exact filter for is partial payment
+          required: false
+          schema:
+            type: boolean
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseLeasePaymentRecordDTO'
+    post:
+      tags:
+        - LeasePaymentRecord
+      summary: Create a new lease payment record
+      operationId: create_1
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasePaymentRecordDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasePaymentRecordDTO'
+  '/api/v1/leasing-agreements/{leasingAgreementId}/installments':
+    get:
+      tags:
+        - LeaseInstallmentSchedule
+      summary: List or search lease installment schedules for an agreement
+      operationId: findAll_2
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.leasingAgreementId
+          in: query
+          description: Exact filter for leasing agreement id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.installmentNumber
+          in: query
+          description: Exact filter for installment number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[installmentNumber].from'
+          in: query
+          description: Filter installment number from value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: 'rangeFilters.ranges[installmentNumber].to'
+          in: query
+          description: Filter installment number to value
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.dueDate
+          in: query
+          description: Exact filter for due date
+          required: false
+          schema:
+            type: string
+        - name: filters.principalDue
+          in: query
+          description: Exact filter for principal due
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[principalDue].from'
+          in: query
+          description: Filter principal due from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[principalDue].to'
+          in: query
+          description: Filter principal due to value
+          required: false
+          schema:
+            type: string
+        - name: filters.interestDue
+          in: query
+          description: Exact filter for interest due
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[interestDue].from'
+          in: query
+          description: Filter interest due from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[interestDue].to'
+          in: query
+          description: Filter interest due to value
+          required: false
+          schema:
+            type: string
+        - name: filters.feeDue
+          in: query
+          description: Exact filter for fee due
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[feeDue].from'
+          in: query
+          description: Filter fee due from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[feeDue].to'
+          in: query
+          description: Filter fee due to value
+          required: false
+          schema:
+            type: string
+        - name: filters.totalDue
+          in: query
+          description: Exact filter for total due
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[totalDue].from'
+          in: query
+          description: Filter total due from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[totalDue].to'
+          in: query
+          description: Filter total due to value
+          required: false
+          schema:
+            type: string
+        - name: filters.isPaid
+          in: query
+          description: Exact filter for is paid
+          required: false
+          schema:
+            type: boolean
+        - name: filters.paidDate
+          in: query
+          description: Exact filter for paid date
+          required: false
+          schema:
+            type: string
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: >-
+                  #/components/schemas/PaginationResponseLeaseInstallmentScheduleDTO
+    post:
+      tags:
+        - LeaseInstallmentSchedule
+      summary: Create a new installment schedule entry
+      operationId: create_2
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+  '/api/v1/leasing-agreements/{leasingAgreementId}/assets':
+    get:
+      tags:
+        - LeasingAsset
+      summary: List or search leased assets for a leasing agreement
+      operationId: findAll_3
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.leasingAgreementId
+          in: query
+          description: Exact filter for leasing agreement id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.assetTypeId
+          in: query
+          description: Exact filter for asset type id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.assetDescription
+          in: query
+          description: Exact filter for asset description
+          required: false
+          schema:
+            type: string
+        - name: filters.assetSerialNumber
+          in: query
+          description: Exact filter for asset serial number
+          required: false
+          schema:
+            type: string
+        - name: filters.assetValue
+          in: query
+          description: Exact filter for asset value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[assetValue].from'
+          in: query
+          description: Filter asset value from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[assetValue].to'
+          in: query
+          description: Filter asset value to value
+          required: false
+          schema:
+            type: string
+        - name: filters.isActive
+          in: query
+          description: Exact filter for is active
+          required: false
+          schema:
+            type: boolean
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseLeasingAssetDTO'
+    post:
+      tags:
+        - LeasingAsset
+      summary: Create a new asset record under a leasing agreement
+      operationId: create_4
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeasingAssetDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeasingAssetDTO'
+  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events':
+    get:
+      tags:
+        - LeaseServiceEvent
+      summary: List or search service events for a leased asset
+      operationId: findAll_4
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: pagination.pageNumber
+          in: query
+          description: Page number (0-based)
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: pagination.pageSize
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: pagination.sortBy
+          in: query
+          description: Field to sort by
+          required: false
+          schema:
+            type: string
+        - name: pagination.sortDirection
+          in: query
+          description: Sort direction (ASC or DESC)
+          required: false
+          schema:
+            type: string
+            default: DESC
+        - name: options.caseInsensitiveStrings
+          in: query
+          description: Enable case-insensitive string filtering
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: options.includeInheritedFields
+          in: query
+          description: Include fields from parent classes
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: filters.leasingAssetId
+          in: query
+          description: Exact filter for leasing asset id
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: filters.eventDate
+          in: query
+          description: Exact filter for event date
+          required: false
+          schema:
+            type: string
+        - name: filters.eventType
+          in: query
+          description: Exact filter for event type
+          required: false
+          schema:
+            type: string
+            enum:
+              - MAINTENANCE
+              - REPAIR
+              - INSPECTION
+              - ACCIDENT
+              - WARRANTY
+              - UPGRADE
+        - name: filters.cost
+          in: query
+          description: Exact filter for cost
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[cost].from'
+          in: query
+          description: Filter cost from value
+          required: false
+          schema:
+            type: string
+        - name: 'rangeFilters.ranges[cost].to'
+          in: query
+          description: Filter cost to value
+          required: false
+          schema:
+            type: string
+        - name: filters.note
+          in: query
+          description: Exact filter for note
+          required: false
+          schema:
+            type: string
+        - name: filters.createdAt
+          in: query
+          description: Exact filter for created at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].from'
+          in: query
+          description: Filter created at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[createdAt].to'
+          in: query
+          description: Filter created at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: filters.updatedAt
+          in: query
+          description: Exact filter for updated at
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].from'
+          in: query
+          description: Filter updated at from value
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: 'rangeFilters.ranges[updatedAt].to'
+          in: query
+          description: Filter updated at to value
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaginationResponseLeaseServiceEventDTO'
+    post:
+      tags:
+        - LeaseServiceEvent
+      summary: Create a new service event for a leased asset
+      operationId: create_5
+      parameters:
+        - name: leasingAgreementId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: leasingAssetId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: X-Idempotency-Key
+          in: header
+          description: >-
+            Unique key for idempotent requests. If provided, ensures that
+            identical requests with the same key will only be processed once.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaseServiceEventDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LeaseServiceEventDTO'
+components:
+  schemas:
+    LeasingAgreementDTO:
+      type: object
+      properties:
+        leasingAgreementId:
+          type: integer
+          format: int64
+          readOnly: true
+        contractId:
+          type: integer
+          format: int64
+        customerId:
+          type: integer
+          format: int64
+        agreementStatus:
+          type: string
+          enum:
+            - ACTIVE
+            - RESTRUCTURED
+            - CLOSED
+            - DEFAULTED
+            - TERMINATED
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        principalAmount:
+          type: number
+        interestRate:
+          type: number
+        residualValue:
+          type: number
+        purchaseOption:
+          type: boolean
+        remarks:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LeasePaymentRecordDTO:
+      type: object
+      properties:
+        leasePaymentRecordId:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingAgreementId:
+          type: integer
+          format: int64
+        leaseInstallmentScheduleId:
+          type: integer
+          format: int64
+        transactionId:
+          type: integer
+          format: int64
+        paymentAmount:
+          type: number
+        paymentDate:
+          type: string
+          format: date
+        isPartialPayment:
+          type: boolean
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LeaseInstallmentScheduleDTO:
+      type: object
+      properties:
+        leaseInstallmentScheduleId:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingAgreementId:
+          type: integer
+          format: int64
+        installmentNumber:
+          type: integer
+          format: int32
+        dueDate:
+          type: string
+          format: date
+        principalDue:
+          type: number
+        interestDue:
+          type: number
+        feeDue:
+          type: number
+        totalDue:
+          type: number
+        isPaid:
+          type: boolean
+        paidDate:
+          type: string
+          format: date
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LeaseEndOptionDTO:
+      type: object
+      properties:
+        leaseEndOptionId:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingAgreementId:
+          type: integer
+          format: int64
+        optionExerciseDate:
+          type: string
+          format: date
+        optionPaidAmount:
+          type: number
+        isExercised:
+          type: boolean
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LeasingAssetDTO:
+      type: object
+      properties:
+        leasingAssetId:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingAgreementId:
+          type: integer
+          format: int64
+        assetTypeId:
+          type: integer
+          format: int64
+        assetDescription:
+          type: string
+        assetSerialNumber:
+          type: string
+        assetValue:
+          type: number
+        isActive:
+          type: boolean
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LeaseServiceEventDTO:
+      type: object
+      properties:
+        leaseServiceEventId:
+          type: integer
+          format: int64
+          readOnly: true
+        leasingAssetId:
+          type: integer
+          format: int64
+        eventDate:
+          type: string
+          format: date
+        eventType:
+          type: string
+          enum:
+            - MAINTENANCE
+            - REPAIR
+            - INSPECTION
+            - ACCIDENT
+            - WARRANTY
+            - UPGRADE
+        cost:
+          type: number
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationResponseLeasingAgreementDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/LeasingAgreementDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseLeasePaymentRecordDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/LeasePaymentRecordDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseLeaseInstallmentScheduleDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseLeasingAssetDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/LeasingAssetDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.
+    PaginationResponseLeaseServiceEventDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: '#/components/schemas/LeaseServiceEventDTO'
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: 'The current page number, typically zero-based.'
+          format: int32
+      description: >-
+        Represents a paginated response containing a list of items and
+        pagination metadata.

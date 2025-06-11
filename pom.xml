@@ -18,6 +18,8 @@
         <module>core-lending-leasing-interfaces</module>
         <module>core-lending-leasing-models</module>
         <module>core-lending-leasing-web</module>
+        <module>core-lending-leasing-sdk</module>
+
     </modules>
 
 
@@ -48,6 +50,11 @@
             <dependency>
                 <groupId>com.catalis</groupId>
                 <artifactId>core-lending-leasing-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.catalis</groupId>
+                <artifactId>core-lending-leasing-sdk</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
