@@ -463,7 +463,7 @@ spring:
 
 ### Estructura del Proyecto
 
-- Sigue la estructura de paquetes: `com.catalis.core.lending.leasing.[módulo].[componente].[versión]`
+- Sigue la estructura de paquetes: `com.firefly.core.lending.leasing.[módulo].[componente].[versión]`
 - Usa versionado en nombres de paquetes (ej., `v1`) para soportar versionado de API
 - Mantén los controladores en el módulo web
 - Mantén la lógica de negocio en el módulo core
