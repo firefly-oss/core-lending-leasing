@@ -580,4 +580,4 @@ El pipeline de CI/CD incluye:
 
 Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-Copyright (c) 2023 Catalis
+Copyright (c) 2023 Firefly
