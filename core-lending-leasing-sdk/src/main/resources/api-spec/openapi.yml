@@ -7,7 +7,7 @@ info:
     email: dev@getfirefly.io
   version: 1.0.0
 servers:
-  - url: 'http://core.catalis.vc/leasing'
+  - url: http://core.catalis.vc/leasing
     description: Development Environment
   - url: /
     description: Local Development Environment
@@ -25,7 +25,7 @@ tags:
   - name: LeasingAgreement
     description: Operations on finance leasing agreements
 paths:
-  '/api/v1/leasing-agreements/{leasingAgreementId}':
+  /api/v1/leasing-agreements/{leasingAgreementId}:
     get:
       tags:
         - LeasingAgreement
@@ -36,8 +36,8 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -55,13 +55,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -88,12 +86,12 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
-  '/api/v1/leasing-agreements/{leasingAgreementId}/payments/{leasePaymentRecordId}':
+  /api/v1/leasing-agreements/{leasingAgreementId}/payments/{leasePaymentRecordId}:
     get:
       tags:
         - LeasePaymentRecord
@@ -104,14 +102,14 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasePaymentRecordId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -129,19 +127,17 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasePaymentRecordId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -168,18 +164,18 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasePaymentRecordId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
-  '/api/v1/leasing-agreements/{leasingAgreementId}/installments/{leaseInstallmentScheduleId}':
+  /api/v1/leasing-agreements/{leasingAgreementId}/installments/{leaseInstallmentScheduleId}:
     get:
       tags:
         - LeaseInstallmentSchedule
@@ -190,14 +186,14 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseInstallmentScheduleId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -215,19 +211,17 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseInstallmentScheduleId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -254,18 +248,18 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseInstallmentScheduleId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
-  '/api/v1/leasing-agreements/{leasingAgreementId}/end-option':
+  /api/v1/leasing-agreements/{leasingAgreementId}/end-option:
     get:
       tags:
         - LeaseEndOption
@@ -276,8 +270,8 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -295,13 +289,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -328,13 +320,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -361,12 +351,12 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
-  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}':
+  /api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}:
     get:
       tags:
         - LeasingAsset
@@ -377,14 +367,14 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -402,19 +392,17 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -441,18 +429,18 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
-  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events/{leaseServiceEventId}':
+  /api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events/{leaseServiceEventId}:
     get:
       tags:
         - LeaseServiceEvent
@@ -463,20 +451,20 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseServiceEventId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -494,25 +482,23 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseServiceEventId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -539,20 +525,20 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leaseServiceEventId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -611,15 +597,13 @@ paths:
           description: Exact filter for contract id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.customerId
           in: query
           description: Exact filter for customer id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.agreementStatus
           in: query
           description: Exact filter for agreement status
@@ -650,13 +634,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[principalAmount].from'
+        - name: rangeFilters.ranges[principalAmount].from
           in: query
           description: Filter principal amount from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[principalAmount].to'
+        - name: rangeFilters.ranges[principalAmount].to
           in: query
           description: Filter principal amount to value
           required: false
@@ -668,13 +652,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[interestRate].from'
+        - name: rangeFilters.ranges[interestRate].from
           in: query
           description: Filter interest rate from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[interestRate].to'
+        - name: rangeFilters.ranges[interestRate].to
           in: query
           description: Filter interest rate to value
           required: false
@@ -686,13 +670,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[residualValue].from'
+        - name: rangeFilters.ranges[residualValue].from
           in: query
           description: Filter residual value from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[residualValue].to'
+        - name: rangeFilters.ranges[residualValue].to
           in: query
           description: Filter residual value to value
           required: false
@@ -717,14 +701,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].from'
+        - name: rangeFilters.ranges[createdAt].from
           in: query
           description: Filter created at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].to'
+        - name: rangeFilters.ranges[createdAt].to
           in: query
           description: Filter created at to value
           required: false
@@ -738,14 +722,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].from'
+        - name: rangeFilters.ranges[updatedAt].from
           in: query
           description: Filter updated at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].to'
+        - name: rangeFilters.ranges[updatedAt].to
           in: query
           description: Filter updated at to value
           required: false
@@ -767,9 +751,7 @@ paths:
       parameters:
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -786,7 +768,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/LeasingAgreementDTO'
-  '/api/v1/leasing-agreements/{leasingAgreementId}/payments':
+  /api/v1/leasing-agreements/{leasingAgreementId}/payments:
     get:
       tags:
         - LeasePaymentRecord
@@ -797,8 +779,8 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: pagination.pageNumber
           in: query
           description: Page number (0-based)
@@ -847,28 +829,26 @@ paths:
           description: Exact filter for leasing agreement id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.leaseInstallmentScheduleId
           in: query
           description: Exact filter for lease installment schedule id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.paymentAmount
           in: query
           description: Exact filter for payment amount
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[paymentAmount].from'
+        - name: rangeFilters.ranges[paymentAmount].from
           in: query
           description: Filter payment amount from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[paymentAmount].to'
+        - name: rangeFilters.ranges[paymentAmount].to
           in: query
           description: Filter payment amount to value
           required: false
@@ -899,14 +879,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].from'
+        - name: rangeFilters.ranges[createdAt].from
           in: query
           description: Filter created at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].to'
+        - name: rangeFilters.ranges[createdAt].to
           in: query
           description: Filter created at to value
           required: false
@@ -920,14 +900,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].from'
+        - name: rangeFilters.ranges[updatedAt].from
           in: query
           description: Filter updated at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].to'
+        - name: rangeFilters.ranges[updatedAt].to
           in: query
           description: Filter updated at to value
           required: false
@@ -951,13 +931,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -974,7 +952,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/LeasePaymentRecordDTO'
-  '/api/v1/leasing-agreements/{leasingAgreementId}/installments':
+  /api/v1/leasing-agreements/{leasingAgreementId}/installments:
     get:
       tags:
         - LeaseInstallmentSchedule
@@ -985,8 +963,8 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: pagination.pageNumber
           in: query
           description: Page number (0-based)
@@ -1035,8 +1013,7 @@ paths:
           description: Exact filter for leasing agreement id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.installmentNumber
           in: query
           description: Exact filter for installment number
@@ -1044,14 +1021,14 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: 'rangeFilters.ranges[installmentNumber].from'
+        - name: rangeFilters.ranges[installmentNumber].from
           in: query
           description: Filter installment number from value
           required: false
           schema:
             type: integer
             format: int32
-        - name: 'rangeFilters.ranges[installmentNumber].to'
+        - name: rangeFilters.ranges[installmentNumber].to
           in: query
           description: Filter installment number to value
           required: false
@@ -1070,13 +1047,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[principalDue].from'
+        - name: rangeFilters.ranges[principalDue].from
           in: query
           description: Filter principal due from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[principalDue].to'
+        - name: rangeFilters.ranges[principalDue].to
           in: query
           description: Filter principal due to value
           required: false
@@ -1088,13 +1065,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[interestDue].from'
+        - name: rangeFilters.ranges[interestDue].from
           in: query
           description: Filter interest due from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[interestDue].to'
+        - name: rangeFilters.ranges[interestDue].to
           in: query
           description: Filter interest due to value
           required: false
@@ -1106,13 +1083,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[feeDue].from'
+        - name: rangeFilters.ranges[feeDue].from
           in: query
           description: Filter fee due from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[feeDue].to'
+        - name: rangeFilters.ranges[feeDue].to
           in: query
           description: Filter fee due to value
           required: false
@@ -1124,13 +1101,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[totalDue].from'
+        - name: rangeFilters.ranges[totalDue].from
           in: query
           description: Filter total due from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[totalDue].to'
+        - name: rangeFilters.ranges[totalDue].to
           in: query
           description: Filter total due to value
           required: false
@@ -1161,14 +1138,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].from'
+        - name: rangeFilters.ranges[createdAt].from
           in: query
           description: Filter created at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].to'
+        - name: rangeFilters.ranges[createdAt].to
           in: query
           description: Filter created at to value
           required: false
@@ -1182,14 +1159,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].from'
+        - name: rangeFilters.ranges[updatedAt].from
           in: query
           description: Filter updated at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].to'
+        - name: rangeFilters.ranges[updatedAt].to
           in: query
           description: Filter updated at to value
           required: false
@@ -1202,8 +1179,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: >-
-                  #/components/schemas/PaginationResponseLeaseInstallmentScheduleDTO
+                $ref: '#/components/schemas/PaginationResponseLeaseInstallmentScheduleDTO'
     post:
       tags:
         - LeaseInstallmentSchedule
@@ -1214,13 +1190,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -1237,7 +1211,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/LeaseInstallmentScheduleDTO'
-  '/api/v1/leasing-agreements/{leasingAgreementId}/assets':
+  /api/v1/leasing-agreements/{leasingAgreementId}/assets:
     get:
       tags:
         - LeasingAsset
@@ -1248,8 +1222,8 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: pagination.pageNumber
           in: query
           description: Page number (0-based)
@@ -1298,15 +1272,13 @@ paths:
           description: Exact filter for leasing agreement id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.assetTypeId
           in: query
           description: Exact filter for asset type id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.assetDescription
           in: query
           description: Exact filter for asset description
@@ -1325,13 +1297,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[assetValue].from'
+        - name: rangeFilters.ranges[assetValue].from
           in: query
           description: Filter asset value from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[assetValue].to'
+        - name: rangeFilters.ranges[assetValue].to
           in: query
           description: Filter asset value to value
           required: false
@@ -1356,14 +1328,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].from'
+        - name: rangeFilters.ranges[createdAt].from
           in: query
           description: Filter created at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].to'
+        - name: rangeFilters.ranges[createdAt].to
           in: query
           description: Filter created at to value
           required: false
@@ -1377,14 +1349,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].from'
+        - name: rangeFilters.ranges[updatedAt].from
           in: query
           description: Filter updated at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].to'
+        - name: rangeFilters.ranges[updatedAt].to
           in: query
           description: Filter updated at to value
           required: false
@@ -1408,13 +1380,11 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -1431,7 +1401,7 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/LeasingAssetDTO'
-  '/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events':
+  /api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events:
     get:
       tags:
         - LeaseServiceEvent
@@ -1442,14 +1412,14 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: pagination.pageNumber
           in: query
           description: Page number (0-based)
@@ -1498,8 +1468,7 @@ paths:
           description: Exact filter for leasing asset id
           required: false
           schema:
-            type: integer
-            format: int32
+            type: string
         - name: filters.eventDate
           in: query
           description: Exact filter for event date
@@ -1525,13 +1494,13 @@ paths:
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[cost].from'
+        - name: rangeFilters.ranges[cost].from
           in: query
           description: Filter cost from value
           required: false
           schema:
             type: string
-        - name: 'rangeFilters.ranges[cost].to'
+        - name: rangeFilters.ranges[cost].to
           in: query
           description: Filter cost to value
           required: false
@@ -1550,14 +1519,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].from'
+        - name: rangeFilters.ranges[createdAt].from
           in: query
           description: Filter created at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[createdAt].to'
+        - name: rangeFilters.ranges[createdAt].to
           in: query
           description: Filter created at to value
           required: false
@@ -1571,14 +1540,14 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].from'
+        - name: rangeFilters.ranges[updatedAt].from
           in: query
           description: Filter updated at from value
           required: false
           schema:
             type: string
             format: date-time
-        - name: 'rangeFilters.ranges[updatedAt].to'
+        - name: rangeFilters.ranges[updatedAt].to
           in: query
           description: Filter updated at to value
           required: false
@@ -1602,19 +1571,17 @@ paths:
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: leasingAssetId
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
+            format: uuid
         - name: X-Idempotency-Key
           in: header
-          description: >-
-            Unique key for idempotent requests. If provided, ensures that
-            identical requests with the same key will only be processed once.
+          description: Unique key for idempotent requests. If provided, ensures that identical requests with the same key will only be processed once.
           required: false
           schema:
             type: string
@@ -1634,18 +1601,26 @@ paths:
 components:
   schemas:
     LeasingAgreementDTO:
+      required:
+        - agreementStatus
+        - contractId
+        - customerId
+        - endDate
+        - interestRate
+        - principalAmount
+        - startDate
       type: object
       properties:
         leasingAgreementId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         contractId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         customerId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         agreementStatus:
           type: string
           enum:
@@ -1661,14 +1636,22 @@ components:
           type: string
           format: date
         principalAmount:
+          minimum: 0.01
+          exclusiveMinimum: false
           type: number
         interestRate:
+          maximum: 100
+          exclusiveMaximum: false
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         residualValue:
           type: number
         purchaseOption:
           type: boolean
         remarks:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1677,22 +1660,30 @@ components:
           type: string
           format: date-time
     LeasePaymentRecordDTO:
+      required:
+        - leaseInstallmentScheduleId
+        - leasingAgreementId
+        - paymentAmount
+        - paymentDate
+        - transactionId
       type: object
       properties:
         leasePaymentRecordId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingAgreementId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         leaseInstallmentScheduleId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         transactionId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         paymentAmount:
+          minimum: 0.01
+          exclusiveMinimum: false
           type: number
         paymentDate:
           type: string
@@ -1700,6 +1691,8 @@ components:
         isPartialPayment:
           type: boolean
         note:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1708,28 +1701,44 @@ components:
           type: string
           format: date-time
     LeaseInstallmentScheduleDTO:
+      required:
+        - dueDate
+        - installmentNumber
+        - interestDue
+        - leasingAgreementId
+        - principalDue
+        - totalDue
       type: object
       properties:
         leaseInstallmentScheduleId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingAgreementId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         installmentNumber:
+          minimum: 1
           type: integer
           format: int32
         dueDate:
           type: string
           format: date
         principalDue:
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         interestDue:
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         feeDue:
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         totalDue:
+          minimum: 0.01
+          exclusiveMinimum: false
           type: number
         isPaid:
           type: boolean
@@ -1737,6 +1746,8 @@ components:
           type: string
           format: date
         note:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1745,23 +1756,31 @@ components:
           type: string
           format: date-time
     LeaseEndOptionDTO:
+      required:
+        - leasingAgreementId
+        - optionExerciseDate
+        - optionPaidAmount
       type: object
       properties:
         leaseEndOptionId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingAgreementId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         optionExerciseDate:
           type: string
           format: date
         optionPaidAmount:
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         isExercised:
           type: boolean
         note:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1770,27 +1789,41 @@ components:
           type: string
           format: date-time
     LeasingAssetDTO:
+      required:
+        - assetDescription
+        - assetSerialNumber
+        - assetTypeId
+        - assetValue
+        - leasingAgreementId
       type: object
       properties:
         leasingAssetId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingAgreementId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         assetTypeId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         assetDescription:
+          maxLength: 500
+          minLength: 3
           type: string
         assetSerialNumber:
+          maxLength: 100
+          minLength: 1
           type: string
         assetValue:
+          minimum: 0.01
+          exclusiveMinimum: false
           type: number
         isActive:
           type: boolean
         note:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1799,15 +1832,20 @@ components:
           type: string
           format: date-time
     LeaseServiceEventDTO:
+      required:
+        - cost
+        - eventDate
+        - eventType
+        - leasingAssetId
       type: object
       properties:
         leaseServiceEventId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
           readOnly: true
         leasingAssetId:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         eventDate:
           type: string
           format: date
@@ -1821,8 +1859,12 @@ components:
             - WARRANTY
             - UPGRADE
         cost:
+          minimum: 0
+          exclusiveMinimum: false
           type: number
         note:
+          maxLength: 1000
+          minLength: 0
           type: string
         createdAt:
           type: string
@@ -1848,11 +1890,9 @@ components:
           format: int32
         currentPage:
           type: integer
-          description: 'The current page number, typically zero-based.'
+          description: The current page number, typically zero-based.
           format: int32
-      description: >-
-        Represents a paginated response containing a list of items and
-        pagination metadata.
+      description: Represents a paginated response containing a list of items and pagination metadata.
     PaginationResponseLeasePaymentRecordDTO:
       type: object
       properties:
@@ -1871,11 +1911,9 @@ components:
           format: int32
         currentPage:
           type: integer
-          description: 'The current page number, typically zero-based.'
+          description: The current page number, typically zero-based.
           format: int32
-      description: >-
-        Represents a paginated response containing a list of items and
-        pagination metadata.
+      description: Represents a paginated response containing a list of items and pagination metadata.
     PaginationResponseLeaseInstallmentScheduleDTO:
       type: object
       properties:
@@ -1894,11 +1932,9 @@ components:
           format: int32
         currentPage:
           type: integer
-          description: 'The current page number, typically zero-based.'
+          description: The current page number, typically zero-based.
           format: int32
-      description: >-
-        Represents a paginated response containing a list of items and
-        pagination metadata.
+      description: Represents a paginated response containing a list of items and pagination metadata.
     PaginationResponseLeasingAssetDTO:
       type: object
       properties:
@@ -1917,11 +1953,9 @@ components:
           format: int32
         currentPage:
           type: integer
-          description: 'The current page number, typically zero-based.'
+          description: The current page number, typically zero-based.
           format: int32
-      description: >-
-        Represents a paginated response containing a list of items and
-        pagination metadata.
+      description: Represents a paginated response containing a list of items and pagination metadata.
     PaginationResponseLeaseServiceEventDTO:
       type: object
       properties:
@@ -1940,8 +1974,6 @@ components:
           format: int32
         currentPage:
           type: integer
-          description: 'The current page number, typically zero-based.'
+          description: The current page number, typically zero-based.
           format: int32
-      description: >-
-        Represents a paginated response containing a list of items and
-        pagination metadata.
+      description: Represents a paginated response containing a list of items and pagination metadata.
