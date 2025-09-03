@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/leasing-agreements/{leasingAgreementId}/end-option")
 @Tag(name = "LeaseEndOption", description = "End-of-lease purchase or return option for a finance lease")
@@ -20,7 +21,7 @@ public class LeaseEndOptionController {
     @GetMapping
     @Operation(summary = "Get the end-of-lease option details for an agreement")
     public Mono<ResponseEntity<LeaseEndOptionDTO>> getByAgreement(
-            @PathVariable Long leasingAgreementId) {
+            @PathVariable UUID leasingAgreementId) {
 
         return service.getByAgreement(leasingAgreementId)
                 .map(ResponseEntity::ok);
@@ -29,7 +30,7 @@ public class LeaseEndOptionController {
     @PostMapping
     @Operation(summary = "Create the end-of-lease option record (purchase option scenario)")
     public Mono<ResponseEntity<LeaseEndOptionDTO>> create(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @RequestBody LeaseEndOptionDTO dto) {
 
         return service.create(leasingAgreementId, dto)
@@ -39,7 +40,7 @@ public class LeaseEndOptionController {
     @PutMapping
     @Operation(summary = "Update the end-of-lease option record")
     public Mono<ResponseEntity<LeaseEndOptionDTO>> update(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @RequestBody LeaseEndOptionDTO dto) {
 
         return service.update(leasingAgreementId, dto)
@@ -49,7 +50,7 @@ public class LeaseEndOptionController {
     @DeleteMapping
     @Operation(summary = "Delete the end-of-lease option record")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long leasingAgreementId) {
+            @PathVariable UUID leasingAgreementId) {
 
         return service.delete(leasingAgreementId)
                 .thenReturn(ResponseEntity.noContent().build());

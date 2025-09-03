@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/leasing-agreements/{leasingAgreementId}/assets")
 @Tag(name = "LeasingAsset", description = "Operations on leased assets under a leasing agreement")
@@ -22,7 +23,7 @@ public class LeasingAssetController {
     @GetMapping
     @Operation(summary = "List or search leased assets for a leasing agreement")
     public Mono<ResponseEntity<PaginationResponse<LeasingAssetDTO>>> findAll(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @ModelAttribute FilterRequest<LeasingAssetDTO> filterRequest) {
 
         return service.findAll(leasingAgreementId, filterRequest)
@@ -32,7 +33,7 @@ public class LeasingAssetController {
     @PostMapping
     @Operation(summary = "Create a new asset record under a leasing agreement")
     public Mono<ResponseEntity<LeasingAssetDTO>> create(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @RequestBody LeasingAssetDTO dto) {
 
         return service.create(leasingAgreementId, dto)
@@ -42,8 +43,8 @@ public class LeasingAssetController {
     @GetMapping("/{leasingAssetId}")
     @Operation(summary = "Get a leased asset by ID")
     public Mono<ResponseEntity<LeasingAssetDTO>> getById(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId) {
 
         return service.getById(leasingAgreementId, leasingAssetId)
                 .map(ResponseEntity::ok);
@@ -52,8 +53,8 @@ public class LeasingAssetController {
     @PutMapping("/{leasingAssetId}")
     @Operation(summary = "Update a leased asset record")
     public Mono<ResponseEntity<LeasingAssetDTO>> update(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
             @RequestBody LeasingAssetDTO dto) {
 
         return service.update(leasingAgreementId, leasingAssetId, dto)
@@ -63,8 +64,8 @@ public class LeasingAssetController {
     @DeleteMapping("/{leasingAssetId}")
     @Operation(summary = "Delete a leased asset record")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId) {
 
         return service.delete(leasingAgreementId, leasingAssetId)
                 .thenReturn(ResponseEntity.noContent().build());

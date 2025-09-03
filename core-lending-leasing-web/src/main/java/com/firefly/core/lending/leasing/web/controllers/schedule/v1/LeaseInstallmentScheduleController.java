@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/leasing-agreements/{leasingAgreementId}/installments")
 @Tag(name = "LeaseInstallmentSchedule", description = "Installment schedule for a finance lease agreement")
@@ -22,7 +23,7 @@ public class LeaseInstallmentScheduleController {
     @GetMapping
     @Operation(summary = "List or search lease installment schedules for an agreement")
     public Mono<ResponseEntity<PaginationResponse<LeaseInstallmentScheduleDTO>>> findAll(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @ModelAttribute FilterRequest<LeaseInstallmentScheduleDTO> filterRequest) {
 
         return service.findAll(leasingAgreementId, filterRequest)
@@ -32,7 +33,7 @@ public class LeaseInstallmentScheduleController {
     @PostMapping
     @Operation(summary = "Create a new installment schedule entry")
     public Mono<ResponseEntity<LeaseInstallmentScheduleDTO>> create(
-            @PathVariable Long leasingAgreementId,
+            @PathVariable UUID leasingAgreementId,
             @RequestBody LeaseInstallmentScheduleDTO dto) {
 
         return service.create(leasingAgreementId, dto)
@@ -42,8 +43,8 @@ public class LeaseInstallmentScheduleController {
     @GetMapping("/{leaseInstallmentScheduleId}")
     @Operation(summary = "Get an installment schedule entry by ID")
     public Mono<ResponseEntity<LeaseInstallmentScheduleDTO>> getById(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leaseInstallmentScheduleId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leaseInstallmentScheduleId) {
 
         return service.getById(leasingAgreementId, leaseInstallmentScheduleId)
                 .map(ResponseEntity::ok);
@@ -52,8 +53,8 @@ public class LeaseInstallmentScheduleController {
     @PutMapping("/{leaseInstallmentScheduleId}")
     @Operation(summary = "Update an installment schedule record")
     public Mono<ResponseEntity<LeaseInstallmentScheduleDTO>> update(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leaseInstallmentScheduleId,
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leaseInstallmentScheduleId,
             @RequestBody LeaseInstallmentScheduleDTO dto) {
 
         return service.update(leasingAgreementId, leaseInstallmentScheduleId, dto)
@@ -63,8 +64,8 @@ public class LeaseInstallmentScheduleController {
     @DeleteMapping("/{leaseInstallmentScheduleId}")
     @Operation(summary = "Delete an installment schedule entry")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leaseInstallmentScheduleId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leaseInstallmentScheduleId) {
 
         return service.delete(leasingAgreementId, leaseInstallmentScheduleId)
                 .thenReturn(ResponseEntity.noContent().build());

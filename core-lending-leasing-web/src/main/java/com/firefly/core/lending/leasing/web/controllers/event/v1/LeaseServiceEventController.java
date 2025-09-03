@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/leasing-agreements/{leasingAgreementId}/assets/{leasingAssetId}/service-events")
 @Tag(name = "LeaseServiceEvent", description = "Maintenance/repair events for a leased asset")
@@ -22,8 +23,8 @@ public class LeaseServiceEventController {
     @GetMapping
     @Operation(summary = "List or search service events for a leased asset")
     public Mono<ResponseEntity<PaginationResponse<LeaseServiceEventDTO>>> findAll(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
             @ModelAttribute FilterRequest<LeaseServiceEventDTO> filterRequest) {
 
         return service.findAll(leasingAgreementId, leasingAssetId, filterRequest)
@@ -33,8 +34,8 @@ public class LeaseServiceEventController {
     @PostMapping
     @Operation(summary = "Create a new service event for a leased asset")
     public Mono<ResponseEntity<LeaseServiceEventDTO>> create(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
             @RequestBody LeaseServiceEventDTO dto) {
 
         return service.create(leasingAgreementId, leasingAssetId, dto)
@@ -44,9 +45,9 @@ public class LeaseServiceEventController {
     @GetMapping("/{leaseServiceEventId}")
     @Operation(summary = "Get a service event by ID")
     public Mono<ResponseEntity<LeaseServiceEventDTO>> getById(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
-            @PathVariable Long leaseServiceEventId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
+            @PathVariable UUID leaseServiceEventId) {
 
         return service.getById(leasingAgreementId, leasingAssetId, leaseServiceEventId)
                 .map(ResponseEntity::ok);
@@ -55,9 +56,9 @@ public class LeaseServiceEventController {
     @PutMapping("/{leaseServiceEventId}")
     @Operation(summary = "Update a service event record")
     public Mono<ResponseEntity<LeaseServiceEventDTO>> update(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
-            @PathVariable Long leaseServiceEventId,
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
+            @PathVariable UUID leaseServiceEventId,
             @RequestBody LeaseServiceEventDTO dto) {
 
         return service.update(leasingAgreementId, leasingAssetId, leaseServiceEventId, dto)
@@ -67,9 +68,9 @@ public class LeaseServiceEventController {
     @DeleteMapping("/{leaseServiceEventId}")
     @Operation(summary = "Delete a service event record")
     public Mono<ResponseEntity<Void>> delete(
-            @PathVariable Long leasingAgreementId,
-            @PathVariable Long leasingAssetId,
-            @PathVariable Long leaseServiceEventId) {
+            @PathVariable UUID leasingAgreementId,
+            @PathVariable UUID leasingAssetId,
+            @PathVariable UUID leaseServiceEventId) {
 
         return service.delete(leasingAgreementId, leasingAssetId, leaseServiceEventId)
                 .thenReturn(ResponseEntity.noContent().build());
