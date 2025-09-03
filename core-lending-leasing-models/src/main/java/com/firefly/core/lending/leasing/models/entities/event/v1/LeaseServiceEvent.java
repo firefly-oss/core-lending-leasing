@@ -12,6 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -22,10 +23,10 @@ public class LeaseServiceEvent {
 
     @Id
     @Column("lease_service_event_id")
-    private Long leaseServiceEventId;
+    private UUID leaseServiceEventId;
 
     @Column("leasing_asset_id")
-    private Long leasingAssetId; // references LeasingAsset
+    private UUID leasingAssetId; // references LeasingAsset
 
     @Column("event_date")
     private LocalDate eventDate;

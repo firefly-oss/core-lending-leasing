@@ -10,6 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,13 +21,13 @@ public class LeasingAsset {
 
     @Id
     @Column("leasing_asset_id")
-    private Long leasingAssetId;
+    private UUID leasingAssetId;
 
     @Column("leasing_agreement_id")
-    private Long leasingAgreementId; // FK to LeasingAgreement
+    private UUID leasingAgreementId; // FK to LeasingAgreement
 
     @Column("asset_type_id")
-    private Long assetTypeId;
+    private UUID assetTypeId;
 
     @Column("asset_description")
     private String assetDescription;

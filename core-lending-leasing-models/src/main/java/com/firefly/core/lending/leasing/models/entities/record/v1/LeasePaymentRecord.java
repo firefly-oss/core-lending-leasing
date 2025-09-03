@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -21,16 +22,16 @@ public class LeasePaymentRecord {
 
     @Id
     @Column("lease_payment_record_id")
-    private Long leasePaymentRecordId;
+    private UUID leasePaymentRecordId;
 
     @Column("leasing_agreement_id")
-    private Long leasingAgreementId; // FK to LeasingAgreement
+    private UUID leasingAgreementId; // FK to LeasingAgreement
 
     @Column("lease_installment_schedule_id")
-    private Long leaseInstallmentScheduleId; // Optional direct link to the schedule
+    private UUID leaseInstallmentScheduleId; // Optional direct link to the schedule
 
     @Column("transaction_id")
-    private Long transactionId; // external Payment domain reference
+    private UUID transactionId; // external Payment domain reference
 
     @Column("payment_amount")
     private BigDecimal paymentAmount;
