@@ -5,579 +5,776 @@
 ![Spring WebFlux](https://img.shields.io/badge/Spring%20WebFlux-Reactive-blue)
 ![R2DBC](https://img.shields.io/badge/R2DBC-Reactive-yellow)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
-![Docker](https://img.shields.io/badge/Docker-Container-blue)
 ![Maven](https://img.shields.io/badge/Maven-Build-red)
+![Apache License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
-## Índice
-- [Descripción General](#descripción-general)
-- [Arquitectura del Sistema](#arquitectura-del-sistema)
-  - [Estructura de Módulos](#estructura-de-módulos)
-  - [Diagrama ER de la Base de Datos](#diagrama-er-de-la-base-de-datos)
-- [Tecnologías Utilizadas](#tecnologías-utilizadas)
-- [Requisitos Previos](#requisitos-previos)
-- [Instalación y Ejecución](#instalación-y-ejecución)
-  - [Variables de Entorno](#variables-de-entorno)
-  - [Compilación](#compilación)
-  - [Ejecución Local](#ejecución-local)
-  - [Ejecución con Docker](#ejecución-con-docker)
-- [Pruebas y Endpoints](#pruebas-y-endpoints)
-  - [Documentación de la API](#documentación-de-la-api)
-  - [Endpoints Principales](#endpoints-principales)
-  - [Monitoreo y Health Checks](#monitoreo-y-health-checks)
-- [Estructura del Repositorio](#estructura-del-repositorio)
-- [Configuración](#configuración)
-  - [Perfiles de Aplicación](#perfiles-de-aplicación)
-  - [Configuración de Base de Datos](#configuración-de-base-de-datos)
-- [Guías de Desarrollo](#guías-de-desarrollo)
-- [Despliegue](#despliegue)
-  - [Kubernetes](#kubernetes)
-  - [CI/CD](#cicd)
-- [Licencia](#licencia)
+A comprehensive leasing management microservice built as part of the **Firefly OpenCore Banking Platform** developed by **Firefly Software Solutions Inc** under the Apache 2.0 license.
 
-## Descripción General
+## Table of Contents
+- [Overview](#overview)
+- [System Architecture](#system-architecture)
+  - [Module Structure](#module-structure)
+  - [Database Entity Relationship Diagram](#database-entity-relationship-diagram)
+- [Technology Stack](#technology-stack)
+- [Prerequisites](#prerequisites)
+- [Installation and Execution](#installation-and-execution)
+  - [Environment Variables](#environment-variables)
+  - [Building the Project](#building-the-project)
+  - [Local Execution](#local-execution)
+- [API Documentation](#api-documentation)
+  - [OpenAPI Specification](#openapi-specification)
+  - [Main Endpoints](#main-endpoints)
+  - [Health Checks and Monitoring](#health-checks-and-monitoring)
+- [Repository Structure](#repository-structure)
+- [Configuration](#configuration)
+  - [Application Profiles](#application-profiles)
+  - [Database Configuration](#database-configuration)
+- [Development Guidelines](#development-guidelines)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
-El Core Lending Leasing Service es un componente microservicio de la plataforma Firefly que gestiona contratos de arrendamiento, activos, registros de pagos, programas de cuotas y otras funcionalidades relacionadas con el leasing. Proporciona una API completa para crear y gestionar acuerdos de arrendamiento y sus datos asociados.
+## Overview
 
-Este servicio forma parte de una arquitectura de microservicios más amplia, diseñada para proporcionar soluciones financieras flexibles y escalables. Utiliza un enfoque reactivo para garantizar un alto rendimiento y una baja latencia, incluso bajo cargas elevadas.
+The Core Lending Leasing Service is a reactive microservice that provides comprehensive leasing agreement management capabilities within the Firefly OpenCore Banking Platform. This service handles the complete lifecycle of leasing agreements, from creation to closure, including asset management, payment tracking, installment scheduling, and end-of-lease options.
 
-## Arquitectura del Sistema
+**Key Features:**
+- **Leasing Agreement Management**: Create, update, and manage leasing contracts with comprehensive status tracking
+- **Asset Management**: Track leased assets with detailed information including type, value, and service history
+- **Payment Processing**: Record and track lease payments with support for partial payments and installment linking
+- **Installment Scheduling**: Generate and manage payment schedules with principal, interest, and fee calculations
+- **Service Event Tracking**: Monitor maintenance, repairs, and other asset-related events
+- **End-of-Lease Options**: Handle purchase options and lease termination scenarios
+- **Reactive Architecture**: Built with Spring WebFlux for high-performance, non-blocking operations
+- **Comprehensive Validation**: Input validation using Jakarta Bean Validation with custom validators
 
-### Estructura de Módulos
+## System Architecture
 
-El servicio está construido como un proyecto Maven multi-módulo con los siguientes componentes:
+### Module Structure
 
-1. **core-lending-leasing-interfaces**: Contiene DTOs (Data Transfer Objects) e interfaces de API
-2. **core-lending-leasing-models**: Contiene entidades de base de datos y repositorios
-3. **core-lending-leasing-core**: Contiene lógica de negocio e implementaciones de servicios
-4. **core-lending-leasing-web**: Contiene controladores REST y configuración de la aplicación
-5. **core-lending-leasing-sdk**: Contiene especificaciones OpenAPI y clientes generados
+The service is built as a Maven multi-module project with clear separation of concerns:
 
-Esta estructura modular permite una clara separación de responsabilidades y facilita el mantenimiento y la evolución del sistema.
+1. **core-lending-leasing-interfaces**: Contains DTOs (Data Transfer Objects), enums, and API interfaces
+2. **core-lending-leasing-models**: Contains database entities, repositories, and database migrations
+3. **core-lending-leasing-core**: Contains business logic, service implementations, and mappers
+4. **core-lending-leasing-web**: Contains REST controllers, configuration, and web layer components
+5. **core-lending-leasing-sdk**: Contains OpenAPI specifications and generated client SDKs
 
-### Diagrama ER de la Base de Datos
+This modular architecture ensures:
+- **Clear separation of concerns** between layers
+- **Easy maintenance** and evolution of individual components
+- **Reusable components** across different parts of the application
+- **Independent testing** of each module
+
+### Database Entity Relationship Diagram
 
 ```mermaid
 erDiagram
-    LEASING_AGREEMENT ||--o{ LEASING_ASSET : "has"
+    LEASING_AGREEMENT ||--o{ LEASING_ASSET : "contains"
     LEASING_AGREEMENT ||--o{ LEASE_INSTALLMENT_SCHEDULE : "has"
-    LEASING_AGREEMENT ||--o{ LEASE_PAYMENT_RECORD : "has"
-    LEASING_AGREEMENT ||--o{ LEASE_END_OPTION : "has"
-    LEASING_ASSET ||--o{ LEASE_SERVICE_EVENT : "has"
-    ASSET_TYPE ||--o{ LEASING_ASSET : "categorizes"
+    LEASING_AGREEMENT ||--o{ LEASE_PAYMENT_RECORD : "receives"
+    LEASING_AGREEMENT ||--o{ LEASE_END_OPTION : "offers"
+    LEASING_ASSET ||--o{ LEASE_SERVICE_EVENT : "experiences"
+    LEASE_INSTALLMENT_SCHEDULE ||--o{ LEASE_PAYMENT_RECORD : "paid_by"
 
     LEASING_AGREEMENT {
-        bigint leasing_agreement_id PK
-        bigint contract_id FK
-        bigint customer_id FK
-        enum agreement_status
+        uuid leasing_agreement_id PK
+        uuid contract_id "External Contract Reference"
+        uuid customer_id "External Customer Reference"
+        agreement_status agreement_status "ACTIVE, RESTRUCTURED, CLOSED, DEFAULTED, TERMINATED"
         date start_date
         date end_date
-        decimal principal_amount
-        decimal interest_rate
-        decimal residual_value
-        boolean purchase_option
-        text remarks
+        decimal principal_amount "Financed amount"
+        decimal interest_rate "Annual interest rate"
+        decimal residual_value "End-of-lease value"
+        boolean purchase_option "Purchase option available"
+        text remarks "Additional notes"
         timestamp created_at
         timestamp updated_at
     }
 
     LEASING_ASSET {
-        bigint leasing_asset_id PK
-        bigint leasing_agreement_id FK
-        bigint asset_type_id FK
-        string asset_description
-        string asset_serial_number
-        decimal asset_value
-        boolean is_active
-        text note
+        uuid leasing_asset_id PK
+        uuid leasing_agreement_id FK
+        uuid asset_type_id "Asset type reference"
+        varchar asset_description "Asset description"
+        varchar asset_serial_number "Serial/VIN number"
+        decimal asset_value "Asset value"
+        boolean is_active "Asset status"
+        text note "Additional notes"
         timestamp created_at
         timestamp updated_at
     }
 
     LEASE_INSTALLMENT_SCHEDULE {
-        bigint lease_installment_schedule_id PK
-        bigint leasing_agreement_id FK
-        int installment_number
-        date due_date
-        decimal principal_due
-        decimal interest_due
-        decimal fee_due
-        decimal total_due
-        boolean is_paid
-        date paid_date
-        text note
+        uuid lease_installment_schedule_id PK
+        uuid leasing_agreement_id FK
+        integer installment_number "Sequential number"
+        date due_date "Payment due date"
+        decimal principal_due "Principal amount due"
+        decimal interest_due "Interest amount due"
+        decimal fee_due "Additional fees due"
+        decimal total_due "Total amount due"
+        boolean is_paid "Payment status"
+        date paid_date "Date payment received"
+        text note "Payment notes"
         timestamp created_at
         timestamp updated_at
     }
 
     LEASE_PAYMENT_RECORD {
-        bigint lease_payment_record_id PK
-        bigint leasing_agreement_id FK
-        bigint lease_installment_schedule_id FK
-        bigint transaction_id
-        decimal payment_amount
-        date payment_date
-        boolean is_partial_payment
-        text note
+        uuid lease_payment_record_id PK
+        uuid leasing_agreement_id FK
+        uuid lease_installment_schedule_id FK "Optional link to schedule"
+        uuid transaction_id "External payment reference"
+        decimal payment_amount "Amount paid"
+        date payment_date "Date of payment"
+        boolean is_partial_payment "Partial payment flag"
+        text note "Payment notes"
         timestamp created_at
         timestamp updated_at
     }
 
     LEASE_SERVICE_EVENT {
-        bigint lease_service_event_id PK
-        bigint leasing_asset_id FK
-        date event_date
-        enum event_type
-        decimal cost
-        text note
+        uuid lease_service_event_id PK
+        uuid leasing_asset_id FK
+        date event_date "Service date"
+        event_type event_type "MAINTENANCE, REPAIR, INSPECTION, ACCIDENT, WARRANTY, UPGRADE"
+        decimal cost "Service cost"
+        text note "Service details"
         timestamp created_at
         timestamp updated_at
     }
 
     LEASE_END_OPTION {
-        bigint lease_end_option_id PK
-        bigint leasing_agreement_id FK
-        date option_exercise_date
-        decimal option_paid_amount
-        boolean is_exercised
-        text note
+        uuid lease_end_option_id PK
+        uuid leasing_agreement_id FK
+        date option_exercise_date "Date option exercised"
+        decimal option_paid_amount "Amount paid for option"
+        boolean is_exercised "Option exercised flag"
+        text note "Option details"
         timestamp created_at
         timestamp updated_at
     }
-
-    ASSET_TYPE {
-        bigint asset_type_id PK
-        string name
-        string description
-    }
 ```
 
-## Tecnologías Utilizadas
+## Technology Stack
 
-El Core Lending Leasing Service utiliza las siguientes tecnologías:
+The Core Lending Leasing Service leverages modern technologies for high-performance reactive applications:
 
-- **Java 21**: Lenguaje de programación base
-- **Spring Boot**: Framework de aplicación que facilita la creación de aplicaciones Spring
-- **Spring WebFlux**: Framework web reactivo para construir aplicaciones web no bloqueantes
-- **Spring Cloud**: Proporciona herramientas para sistemas distribuidos comunes
-- **R2DBC**: Reactive Relational Database Connectivity para acceso reactivo a bases de datos
-- **PostgreSQL**: Sistema de gestión de bases de datos relacional
-- **Flyway**: Herramienta de migración de bases de datos
-- **Maven**: Herramienta de gestión y construcción de proyectos
-- **Docker**: Plataforma de contenedores para empaquetar, distribuir y ejecutar aplicaciones
-- **Swagger/OpenAPI**: Documentación de API y generación de clientes
-- **JUnit 5**: Framework de pruebas unitarias
-- **Mockito**: Framework de mocking para pruebas
+### Core Technologies
+- **Java 21**: Latest LTS version with modern language features and performance improvements
+- **Spring Boot 3.x**: Enterprise-grade application framework with auto-configuration
+- **Spring WebFlux**: Reactive web framework for non-blocking, asynchronous operations
+- **Spring Data R2DBC**: Reactive database access with non-blocking I/O
+- **PostgreSQL**: Robust relational database with excellent JSON and UUID support
 
-## Requisitos Previos
+### Data & Persistence
+- **R2DBC PostgreSQL**: Reactive database driver for PostgreSQL
+- **Flyway**: Database migration and versioning tool
+- **Spring Data R2DBC**: Reactive repository abstraction
 
-Para desarrollar y ejecutar el Core Lending Leasing Service, necesitarás:
+### API & Documentation
+- **SpringDoc OpenAPI**: Automatic API documentation generation
+- **OpenAPI 3.0**: Industry-standard API specification
+- **Swagger UI**: Interactive API documentation interface
 
-- **Java 21** o superior
-- **Maven 3.8** o superior
-- **Docker** (para despliegue en contenedores)
-- **PostgreSQL** (puede ser ejecutado en Docker)
-- **Git** para control de versiones
+### Development & Build Tools
+- **Maven**: Project management and build automation
+- **Lombok**: Reduces boilerplate code with annotations
+- **MapStruct**: Type-safe bean mapping with compile-time code generation
 
-## Instalación y Ejecución
+### Monitoring & Observability
+- **Spring Boot Actuator**: Production-ready monitoring and management endpoints
+- **Micrometer**: Application metrics collection
+- **Prometheus**: Metrics collection and monitoring
 
-### Variables de Entorno
+### Testing
+- **JUnit 5**: Modern testing framework with advanced features
+- **Reactor Test**: Testing utilities for reactive streams
+- **Spring Boot Test**: Comprehensive testing support for Spring applications
 
-El servicio requiere las siguientes variables de entorno:
+## Prerequisites
 
-```
+To develop and run the Core Lending Leasing Service, you need:
+
+- **Java 21** or higher (OpenJDK or Oracle JDK)
+- **Maven 3.8** or higher
+- **PostgreSQL 14** or higher (can be run via Docker)
+- **Git** for version control
+- **IDE** with Java 21 support (IntelliJ IDEA, Eclipse, VS Code)
+
+## Installation and Execution
+
+### Environment Variables
+
+The service requires the following environment variables:
+
+```bash
+# Database Configuration
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=lending_leasing
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 DB_SSL_MODE=disable
+
+# Application Configuration (Optional)
+SPRING_PROFILES_ACTIVE=dev
+SERVER_PORT=8080
 ```
 
-### Compilación
+### Building the Project
 
-Para compilar el proyecto:
+To build the entire project:
 
 ```bash
+# Clean and compile all modules
+mvn clean compile
+
+# Package the application (includes tests)
 mvn clean package
-```
 
-Para omitir las pruebas durante la compilación:
-
-```bash
+# Package without running tests
 mvn clean package -DskipTests
+
+# Install to local Maven repository
+mvn clean install
 ```
 
-### Ejecución Local
+### Local Execution
 
-Para ejecutar la aplicación localmente:
+#### Option 1: Using Maven Spring Boot Plugin
 
 ```bash
+# Run from the web module
 mvn spring-boot:run -pl core-lending-leasing-web
+
+# Run with specific profile
+mvn spring-boot:run -pl core-lending-leasing-web -Dspring-boot.run.profiles=dev
 ```
 
-O después de compilar:
+#### Option 2: Using Java JAR
 
 ```bash
-java -jar core-lending-leasing-web/target/core-lending-leasing-web-*.jar
+# After building the project
+java -jar core-lending-leasing-web/target/core-lending-leasing-*.jar
+
+# With specific profile
+java -jar -Dspring.profiles.active=dev core-lending-leasing-web/target/core-lending-leasing-*.jar
+
+# With custom port
+java -jar -Dserver.port=8081 core-lending-leasing-web/target/core-lending-leasing-*.jar
 ```
 
-### Ejecución con Docker
+#### Option 3: Using IDE
 
-Para construir y ejecutar la aplicación con Docker:
+1. Import the project as a Maven project
+2. Set up environment variables in your IDE
+3. Run the `LendingLeasingApplication` class from the `core-lending-leasing-web` module
+
+### Database Setup
+
+#### Using Docker PostgreSQL
 
 ```bash
-# Construir la imagen Docker
-docker build -t core-lending-leasing .
+# Run PostgreSQL in Docker
+docker run --name postgres-leasing \
+  -e POSTGRES_DB=lending_leasing \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5432:5432 \
+  -d postgres:14
 
-# Ejecutar el contenedor
-docker run -p 8080:8080 \
-  -e DB_HOST=host.docker.internal \
-  -e DB_PORT=5432 \
-  -e DB_NAME=lending_leasing \
-  -e DB_USERNAME=postgres \
-  -e DB_PASSWORD=postgres \
-  -e DB_SSL_MODE=disable \
-  core-lending-leasing
+# Connect to the database (optional)
+docker exec -it postgres-leasing psql -U postgres -d lending_leasing
 ```
 
-También puedes utilizar Docker Compose para ejecutar el servicio junto con una base de datos PostgreSQL:
+#### Using Local PostgreSQL
 
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=lending_leasing
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_SSL_MODE=disable
-    depends_on:
-      - postgres
+```sql
+-- Create database
+CREATE DATABASE lending_leasing;
 
-  postgres:
-    image: postgres:14
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=lending_leasing
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-volumes:
-  postgres-data:
+-- Create user (if needed)
+CREATE USER leasing_user WITH PASSWORD 'leasing_password';
+GRANT ALL PRIVILEGES ON DATABASE lending_leasing TO leasing_user;
 ```
 
-Ejecutar con Docker Compose:
+## API Documentation
 
-```bash
-docker-compose up -d
+### OpenAPI Specification
+
+The service provides comprehensive API documentation through OpenAPI 3.0:
+
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+- **OpenAPI YAML**: `http://localhost:8080/v3/api-docs.yaml`
+
+### Main Endpoints
+
+The service provides a RESTful API organized around leasing agreement resources:
+
+#### Leasing Agreements
+```http
+GET    /api/v1/leasing-agreements                    # List agreements with filtering
+POST   /api/v1/leasing-agreements                    # Create new agreement
+GET    /api/v1/leasing-agreements/{agreementId}      # Get specific agreement
+PUT    /api/v1/leasing-agreements/{agreementId}      # Update agreement
+DELETE /api/v1/leasing-agreements/{agreementId}      # Delete agreement
 ```
 
-## Pruebas y Endpoints
-
-### Documentación de la API
-
-La documentación de la API está disponible en:
-
-- **Swagger UI**: `/swagger-ui.html`
-- **Especificación OpenAPI**: `/v3/api-docs`
-
-### Endpoints Principales
-
-El servicio proporciona una API RESTful con los siguientes endpoints principales:
-
-#### Acuerdos de Arrendamiento (Leasing Agreements)
-
+#### Leasing Assets
+```http
+GET    /api/v1/leasing-agreements/{agreementId}/assets           # List assets for agreement
+POST   /api/v1/leasing-agreements/{agreementId}/assets           # Add asset to agreement
+GET    /api/v1/leasing-agreements/{agreementId}/assets/{assetId} # Get specific asset
+PUT    /api/v1/leasing-agreements/{agreementId}/assets/{assetId} # Update asset
+DELETE /api/v1/leasing-agreements/{agreementId}/assets/{assetId} # Remove asset
 ```
-GET /api/v1/leasing-agreements
+
+#### Payment Records
+```http
+GET    /api/v1/leasing-agreements/{agreementId}/payment-records           # List payments
+POST   /api/v1/leasing-agreements/{agreementId}/payment-records           # Record payment
+GET    /api/v1/leasing-agreements/{agreementId}/payment-records/{recordId} # Get payment
+PUT    /api/v1/leasing-agreements/{agreementId}/payment-records/{recordId} # Update payment
+DELETE /api/v1/leasing-agreements/{agreementId}/payment-records/{recordId} # Delete payment
+```
+
+#### Installment Schedules
+```http
+GET    /api/v1/leasing-agreements/{agreementId}/installment-schedules              # List schedules
+POST   /api/v1/leasing-agreements/{agreementId}/installment-schedules              # Create schedule
+GET    /api/v1/leasing-agreements/{agreementId}/installment-schedules/{scheduleId} # Get schedule
+PUT    /api/v1/leasing-agreements/{agreementId}/installment-schedules/{scheduleId} # Update schedule
+DELETE /api/v1/leasing-agreements/{agreementId}/installment-schedules/{scheduleId} # Delete schedule
+```
+
+#### Service Events
+```http
+GET    /api/v1/leasing-agreements/{agreementId}/assets/{assetId}/service-events           # List events
+POST   /api/v1/leasing-agreements/{agreementId}/assets/{assetId}/service-events           # Record event
+GET    /api/v1/leasing-agreements/{agreementId}/assets/{assetId}/service-events/{eventId} # Get event
+PUT    /api/v1/leasing-agreements/{agreementId}/assets/{assetId}/service-events/{eventId} # Update event
+DELETE /api/v1/leasing-agreements/{agreementId}/assets/{assetId}/service-events/{eventId} # Delete event
+```
+
+#### End-of-Lease Options
+```http
+GET    /api/v1/leasing-agreements/{agreementId}/end-option      # Get end option
+POST   /api/v1/leasing-agreements/{agreementId}/end-option      # Create end option
+PUT    /api/v1/leasing-agreements/{agreementId}/end-option      # Update end option
+DELETE /api/v1/leasing-agreements/{agreementId}/end-option      # Delete end option
+```
+
+### Example API Usage
+
+#### Creating a Leasing Agreement
+```json
 POST /api/v1/leasing-agreements
-GET /api/v1/leasing-agreements/{id}
-PUT /api/v1/leasing-agreements/{id}
-DELETE /api/v1/leasing-agreements/{id}
-```
-
-Ejemplo de creación de un acuerdo de arrendamiento:
-
-```
-POST /api/v1/leasing-agreements
+Content-Type: application/json
 
 {
-  "contractId": 12345,
-  "customerId": 67890,
+  "contractId": "550e8400-e29b-41d4-a716-446655440000",
+  "customerId": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
   "agreementStatus": "ACTIVE",
-  "startDate": "2023-01-01",
-  "endDate": "2025-01-01",
-  "principalAmount": 50000.00,
-  "interestRate": 5.25,
-  "residualValue": 10000.00,
+  "startDate": "2024-01-01",
+  "endDate": "2027-01-01",
+  "principalAmount": 75000.00,
+  "interestRate": 4.5,
+  "residualValue": 15000.00,
   "purchaseOption": true,
-  "remarks": "Contrato de arrendamiento para equipo industrial"
+  "remarks": "Vehicle lease agreement for company fleet"
 }
 ```
 
-#### Activos de Arrendamiento (Leasing Assets)
+#### Adding an Asset
+```json
+POST /api/v1/leasing-agreements/{agreementId}/assets
+Content-Type: application/json
 
-```
-GET /api/v1/leasing-assets
-POST /api/v1/leasing-assets
-GET /api/v1/leasing-assets/{id}
-PUT /api/v1/leasing-assets/{id}
-DELETE /api/v1/leasing-assets/{id}
-```
-
-#### Registros de Pago (Lease Payment Records)
-
-```
-GET /api/v1/lease-payment-records
-POST /api/v1/lease-payment-records
-GET /api/v1/lease-payment-records/{id}
-PUT /api/v1/lease-payment-records/{id}
-DELETE /api/v1/lease-payment-records/{id}
+{
+  "assetTypeId": "123e4567-e89b-12d3-a456-426614174000",
+  "assetDescription": "2024 Toyota Camry Hybrid",
+  "assetSerialNumber": "VIN123456789",
+  "assetValue": 32000.00,
+  "isActive": true,
+  "note": "Company vehicle for sales team"
+}
 ```
 
-#### Programas de Cuotas (Lease Installment Schedules)
+### Health Checks and Monitoring
 
-```
-GET /api/v1/lease-installment-schedules
-POST /api/v1/lease-installment-schedules
-GET /api/v1/lease-installment-schedules/{id}
-PUT /api/v1/lease-installment-schedules/{id}
-DELETE /api/v1/lease-installment-schedules/{id}
-```
+The application provides comprehensive monitoring endpoints:
 
-#### Opciones de Fin de Arrendamiento (Lease End Options)
+- **Health Check**: `GET /actuator/health` - Application health status
+- **Application Info**: `GET /actuator/info` - Build and application information
+- **Metrics**: `GET /actuator/prometheus` - Prometheus-compatible metrics
+- **Database Health**: `GET /actuator/health/db` - Database connectivity status
 
-```
-GET /api/v1/lease-end-options
-POST /api/v1/lease-end-options
-GET /api/v1/lease-end-options/{id}
-PUT /api/v1/lease-end-options/{id}
-DELETE /api/v1/lease-end-options/{id}
-```
-
-#### Eventos de Servicio (Lease Service Events)
-
-```
-GET /api/v1/lease-service-events
-POST /api/v1/lease-service-events
-GET /api/v1/lease-service-events/{id}
-PUT /api/v1/lease-service-events/{id}
-DELETE /api/v1/lease-service-events/{id}
-```
-
-### Monitoreo y Health Checks
-
-La aplicación proporciona los siguientes endpoints para monitoreo:
-
-- `/actuator/health`: Endpoint de verificación de salud
-- `/actuator/info`: Información de la aplicación
-- `/actuator/prometheus`: Métricas para Prometheus
-
-## Estructura del Repositorio
+## Repository Structure
 
 ```
 core-lending-leasing/
-├── .github/                      # Configuraciones de GitHub (workflows, etc.)
-├── core-lending-leasing-core/    # Lógica de negocio
+├── LICENSE                                    # Apache 2.0 License
+├── README.md                                  # This documentation
+├── pom.xml                                    # Parent Maven configuration
+│
+├── core-lending-leasing-interfaces/          # API Contracts & DTOs
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/com/firefly/core/lending/leasing/interfaces/
+│       │   ├── dtos/                         # Data Transfer Objects
+│       │   │   ├── agreement/v1/             # Agreement DTOs
+│       │   │   ├── assets/v1/                # Asset DTOs
+│       │   │   ├── event/v1/                 # Service Event DTOs
+│       │   │   ├── option/v1/                # End Option DTOs
+│       │   │   ├── record/v1/                # Payment Record DTOs
+│       │   │   └── schedule/v1/              # Schedule DTOs
+│       │   └── enums/                        # Enumeration types
+│       └── test/                             # Unit tests
+│
+├── core-lending-leasing-models/              # Data Layer
+│   ├── pom.xml
 │   └── src/
 │       ├── main/
-│       │   └── java/
-│       └── test/
-├── core-lending-leasing-interfaces/ # DTOs e interfaces de API
-│   └── src/
-│       ├── main/
-│       │   └── java/
-│       └── test/
-├── core-lending-leasing-models/  # Entidades y repositorios
-│   └── src/
-│       ├── main/
-│       │   ├── java/
+│       │   ├── java/com/firefly/core/lending/leasing/models/
+│       │   │   ├── entities/                 # JPA/R2DBC Entities
+│       │   │   └── repositories/             # Data repositories
 │       │   └── resources/
-│       │       └── db/migration/  # Scripts de migración Flyway
-│       └── test/
-├── core-lending-leasing-sdk/     # SDK y especificaciones OpenAPI
+│       │       └── db/migration/             # Flyway database migrations
+│       └── test/                             # Integration tests
+│
+├── core-lending-leasing-core/                # Business Logic
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/com/firefly/core/lending/leasing/core/
+│       │   ├── services/                     # Service implementations
+│       │   ├── mappers/                      # Entity-DTO mappers
+│       │   └── config/                       # Core configuration
+│       └── test/                             # Service tests
+│
+├── core-lending-leasing-web/                 # Web Layer
+│   ├── pom.xml
 │   └── src/
 │       ├── main/
+│       │   ├── java/com/firefly/core/lending/leasing/web/
+│       │   │   ├── controllers/              # REST controllers
+│       │   │   ├── config/                   # Web configuration
+│       │   │   └── LendingLeasingApplication.java # Main application
 │       │   └── resources/
-│       │       └── api-spec/     # Especificaciones OpenAPI
-│       └── test/
-├── core-lending-leasing-web/     # Controladores REST y configuración
-│   └── src/
-│       ├── main/
-│       │   ├── java/
-│       │   └── resources/
-│       └── test/
-├── Dockerfile                    # Configuración para Docker
-├── pom.xml                       # Configuración de Maven (proyecto padre)
-└── README.md                     # Este archivo
+│       │       ├── application.yaml          # Application configuration
+│       │       └── application-*.yaml        # Profile-specific configs
+│       └── test/                             # Web layer tests
+│
+└── core-lending-leasing-sdk/                 # SDK & Documentation
+    ├── pom.xml
+    └── src/
+        ├── main/resources/
+        │   └── api-spec/
+        │       └── openapi.yml               # OpenAPI 3.0 specification
+        └── test/                             # SDK tests
 ```
 
-## Configuración
+## Configuration
 
-### Perfiles de Aplicación
+### Application Profiles
 
-La aplicación soporta los siguientes perfiles:
+The service supports multiple environment profiles:
 
-- **dev**: Entorno de desarrollo con logging detallado
-- **testing**: Entorno de pruebas
-- **prod**: Entorno de producción con logging mínimo y Swagger UI deshabilitado
+- **dev**: Development environment with detailed logging and debug features
+- **test**: Testing environment with test-specific configurations
+- **prod**: Production environment with optimized settings and security
 
-Para activar un perfil específico:
+#### Activating Profiles
 
 ```bash
-java -jar -Dspring.profiles.active=dev core-lending-leasing-web/target/core-lending-leasing-web-*.jar
+# Using Maven
+mvn spring-boot:run -pl core-lending-leasing-web -Dspring-boot.run.profiles=dev
+
+# Using Java JAR
+java -jar -Dspring.profiles.active=prod core-lending-leasing-web/target/core-lending-leasing-*.jar
+
+# Using environment variable
+export SPRING_PROFILES_ACTIVE=dev
+java -jar core-lending-leasing-web/target/core-lending-leasing-*.jar
 ```
 
-### Configuración de Base de Datos
+### Database Configuration
 
-La aplicación utiliza PostgreSQL con R2DBC para acceso reactivo a la base de datos. Flyway se utiliza para migraciones de base de datos.
+The application uses PostgreSQL with R2DBC for reactive database access and Flyway for database migrations.
 
-Configuración típica en `application.yml`:
+#### Main Configuration (`application.yaml`)
 
 ```yaml
 spring:
+  application:
+    name: core-lending-leasing
+    version: 1.0.0
+    description: Leasing Core Application
+    team:
+      name: Firefly Software Solutions Inc
+      email: dev@getfirefly.io
+
   r2dbc:
-    url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 30m
+      validation-query: SELECT 1
+    url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslMode=${DB_SSL_MODE}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    properties:
-      sslMode: ${DB_SSL_MODE}
 
   flyway:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslMode=${DB_SSL_MODE}
     user: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    locations: classpath:db/migration
 ```
 
-## Guías de Desarrollo
+#### Development Profile (`application-dev.yaml`)
 
-### Estructura del Proyecto
+```yaml
+logging:
+  level:
+    com.firefly: DEBUG
+    org.springframework.r2dbc: DEBUG
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
 
-- Sigue la estructura de paquetes: `com.firefly.core.lending.leasing.[módulo].[componente].[versión]`
-- Usa versionado en nombres de paquetes (ej., `v1`) para soportar versionado de API
-- Mantén los controladores en el módulo web
-- Mantén la lógica de negocio en el módulo core
-- Mantén el acceso a datos en el módulo models
-- Mantén los DTOs e interfaces en el módulo interfaces
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+```
 
-### Estándares de Codificación
+#### Production Profile (`application-prod.yaml`)
 
-- Usa programación reactiva con Reactor (Mono/Flux)
-- Sigue las mejores prácticas de Spring Boot
-- Usa manejo de errores adecuado con Mono.error()
-- Implementa validación adecuada
-- Escribe pruebas unitarias para todos los componentes
+```yaml
+logging:
+  level:
+    com.firefly: INFO
+    org.springframework.r2dbc: WARN
 
-Ejemplo de servicio reactivo:
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+```
+
+## Development Guidelines
+
+### Project Structure Standards
+
+- **Package Naming**: Follow the pattern `com.firefly.core.lending.leasing.[module].[component].[version]`
+- **API Versioning**: Use version numbers in package names (e.g., `v1`) to support API evolution
+- **Module Separation**:
+  - Controllers and web configuration → `core-lending-leasing-web`
+  - Business logic and services → `core-lending-leasing-core`
+  - Data access and entities → `core-lending-leasing-models`
+  - DTOs and interfaces → `core-lending-leasing-interfaces`
+  - API specifications → `core-lending-leasing-sdk`
+
+### Coding Standards
+
+#### Reactive Programming
+- Use **Reactor** types (`Mono<T>`, `Flux<T>`) for all asynchronous operations
+- Prefer **non-blocking** operations throughout the application stack
+- Handle errors using `Mono.error()` and `Flux.error()`
+- Use proper **backpressure** handling for stream processing
+
+#### Service Implementation Example
 ```java
 @Service
+@Transactional
 public class LeasingAgreementServiceImpl implements LeasingAgreementService {
 
     private final LeasingAgreementRepository repository;
+    private final LeasingAgreementMapper mapper;
 
-    public LeasingAgreementServiceImpl(LeasingAgreementRepository repository) {
+    public LeasingAgreementServiceImpl(LeasingAgreementRepository repository,
+                                       LeasingAgreementMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
     @Override
-    public Mono<LeasingAgreement> findById(Long id) {
+    public Mono<LeasingAgreementDTO> create(LeasingAgreementDTO dto) {
+        return Mono.just(dto)
+            .map(mapper::toEntity)
+            .doOnNext(entity -> {
+                entity.setCreatedAt(LocalDateTime.now());
+                entity.setUpdatedAt(LocalDateTime.now());
+            })
+            .flatMap(repository::save)
+            .map(mapper::toDTO)
+            .onErrorMap(DataIntegrityViolationException.class,
+                ex -> new BusinessException("Agreement creation failed", ex));
+    }
+
+    @Override
+    public Mono<LeasingAgreementDTO> findById(UUID id) {
         return repository.findById(id)
-            .switchIfEmpty(Mono.error(new ResourceNotFoundException("Leasing Agreement not found with id: " + id)));
+            .map(mapper::toDTO)
+            .switchIfEmpty(Mono.error(
+                new ResourceNotFoundException("Agreement not found: " + id)));
     }
-
-    @Override
-    public Flux<LeasingAgreement> findAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Mono<LeasingAgreement> save(LeasingAgreement leasingAgreement) {
-        return repository.save(leasingAgreement);
-    }
-
-    // Otros métodos...
 }
 ```
 
-## Despliegue
+#### Validation Standards
+- Use **Jakarta Bean Validation** annotations on DTOs
+- Implement **custom validators** for complex business rules
+- Validate at the **controller layer** for input validation
+- Validate at the **service layer** for business logic validation
 
-### Kubernetes
+#### Error Handling
+- Use **custom exceptions** for business logic errors
+- Implement **global exception handlers** for consistent error responses
+- Provide **meaningful error messages** with proper HTTP status codes
+- Log errors appropriately based on severity
 
-La aplicación puede ser desplegada en Kubernetes utilizando el Dockerfile proporcionado. Asegúrate de configurar las variables de entorno requeridas en tu configuración de despliegue de Kubernetes.
+#### Testing Standards
+- Write **unit tests** for all service methods
+- Use **integration tests** for repository operations
+- Implement **web layer tests** for controllers
+- Achieve **minimum 80% code coverage**
+- Use **TestContainers** for database integration tests
 
-Ejemplo de configuración de Kubernetes:
+## Testing
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: core-lending-leasing
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: core-lending-leasing
-  template:
-    metadata:
-      labels:
-        app: core-lending-leasing
-    spec:
-      containers:
-      - name: core-lending-leasing
-        image: core-lending-leasing:latest
-        ports:
-        - containerPort: 8080
-        env:
-        - name: DB_HOST
-          value: "postgres-service"
-        - name: DB_PORT
-          value: "5432"
-        - name: DB_NAME
-          value: "lending_leasing"
-        - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: password
-        - name: DB_SSL_MODE
-          value: "disable"
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
+### Running Tests
+
+```bash
+# Run all tests
+mvn test
+
+# Run tests for specific module
+mvn test -pl core-lending-leasing-core
+
+# Run tests with coverage
+mvn test jacoco:report
+
+# Run integration tests
+mvn verify -P integration-tests
+
+# Skip tests during build
+mvn clean package -DskipTests
 ```
 
-### CI/CD
+### Test Categories
 
-La aplicación utiliza GitHub Actions para CI/CD. El flujo de trabajo está definido en `.github/workflows/publish.yml`.
+#### Unit Tests
+- **Service Layer**: Test business logic in isolation
+- **Mapper Tests**: Verify entity-DTO conversions
+- **Validation Tests**: Test input validation rules
 
-El pipeline de CI/CD incluye:
-- Compilación y pruebas
-- Análisis de código estático
-- Construcción de imagen Docker
-- Publicación de la imagen en un registro de contenedores
-- Despliegue en entornos de desarrollo/staging/producción
+#### Integration Tests
+- **Repository Tests**: Test database operations with TestContainers
+- **Web Layer Tests**: Test REST endpoints with WebTestClient
+- **End-to-End Tests**: Full application flow testing
 
-## Licencia
+#### Example Test Structure
+```java
+@ExtendWith(MockitoExtension.class)
+class LeasingAgreementServiceTest {
 
-Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+    @Mock
+    private LeasingAgreementRepository repository;
 
-Copyright (c) 2023 Firefly
+    @Mock
+    private LeasingAgreementMapper mapper;
+
+    @InjectMocks
+    private LeasingAgreementServiceImpl service;
+
+    @Test
+    void shouldCreateAgreementSuccessfully() {
+        // Given
+        LeasingAgreementDTO dto = createTestDTO();
+        LeasingAgreement entity = createTestEntity();
+
+        when(mapper.toEntity(dto)).thenReturn(entity);
+        when(repository.save(any())).thenReturn(Mono.just(entity));
+        when(mapper.toDTO(entity)).thenReturn(dto);
+
+        // When
+        StepVerifier.create(service.create(dto))
+            // Then
+            .expectNext(dto)
+            .verifyComplete();
+    }
+}
+```
+
+## Contributing
+
+We welcome contributions to the Core Lending Leasing Service! Please follow these guidelines:
+
+### Development Workflow
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature-name`
+3. **Make** your changes following the coding standards
+4. **Write** tests for your changes
+5. **Run** the test suite: `mvn test`
+6. **Commit** your changes: `git commit -m "Add your feature"`
+7. **Push** to your branch: `git push origin feature/your-feature-name`
+8. **Create** a Pull Request
+
+### Pull Request Guidelines
+- Provide a clear description of the changes
+- Include relevant tests
+- Ensure all tests pass
+- Follow the existing code style
+- Update documentation if necessary
+
+### Code Review Process
+- All changes require review by at least one maintainer
+- Automated tests must pass
+- Code coverage should not decrease
+- Documentation must be updated for API changes
+
+## License
+
+This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
+
+```
+Copyright 2024 Firefly Software Solutions Inc
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+---
+
+## About Firefly OpenCore Banking Platform
+
+This microservice is part of the **Firefly OpenCore Banking Platform**, a comprehensive open-source banking solution developed by **Firefly Software Solutions Inc**.
+
+- **Website**: [getfirefly.io](https://getfirefly.io)
+- **GitHub Organization**: [firefly-oss](https://github.com/firefly-oss)
+- **Contact**: dev@getfirefly.io
+
+The platform provides modern, scalable, and secure banking solutions built with cutting-edge technologies and industry best practices.
