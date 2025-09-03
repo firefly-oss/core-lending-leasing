@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -46,14 +47,14 @@ public class LeasingAgreementServiceImpl implements LeasingAgreementService {
     }
 
     @Override
-    public Mono<LeasingAgreementDTO> getById(Long leasingAgreementId) {
+    public Mono<LeasingAgreementDTO> getById(UUID leasingAgreementId) {
         return repository.findById(leasingAgreementId)
                 .map(mapper::toDTO)
                 .switchIfEmpty(Mono.error(new RuntimeException("Leasing Agreement not found")));
     }
 
     @Override
-    public Mono<LeasingAgreementDTO> update(Long leasingAgreementId, LeasingAgreementDTO dto) {
+    public Mono<LeasingAgreementDTO> update(UUID leasingAgreementId, LeasingAgreementDTO dto) {
         return repository.findById(leasingAgreementId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Leasing Agreement not found")))
                 .flatMap(existing -> {
@@ -67,7 +68,7 @@ public class LeasingAgreementServiceImpl implements LeasingAgreementService {
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId) {
+    public Mono<Void> delete(UUID leasingAgreementId) {
         return repository.findById(leasingAgreementId)
                 .switchIfEmpty(Mono.error(new RuntimeException("Leasing Agreement not found")))
                 .flatMap(repository::delete);

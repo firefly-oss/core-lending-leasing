@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 import java.time.LocalDateTime;
 
 @Service
@@ -25,7 +26,7 @@ public class LeasingAssetServiceImpl implements LeasingAssetService {
     private LeasingAssetMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<LeasingAssetDTO>> findAll(Long leasingAgreementId, FilterRequest<LeasingAssetDTO> filterRequest) {
+    public Mono<PaginationResponse<LeasingAssetDTO>> findAll(UUID leasingAgreementId, FilterRequest<LeasingAssetDTO> filterRequest) {
         filterRequest.getFilters().setLeasingAgreementId(leasingAgreementId);
         return FilterUtils.createFilter(
                 LeasingAsset.class,
@@ -34,7 +35,7 @@ public class LeasingAssetServiceImpl implements LeasingAssetService {
     }
 
     @Override
-    public Mono<LeasingAssetDTO> create(Long leasingAgreementId, LeasingAssetDTO dto) {
+    public Mono<LeasingAssetDTO> create(UUID leasingAgreementId, LeasingAssetDTO dto) {
         dto.setLeasingAgreementId(leasingAgreementId);
         LeasingAsset entity = mapper.toEntity(dto);
         return Mono.just(entity)
@@ -44,14 +45,14 @@ public class LeasingAssetServiceImpl implements LeasingAssetService {
     }
 
     @Override
-    public Mono<LeasingAssetDTO> getById(Long leasingAgreementId, Long leasingAssetId) {
+    public Mono<LeasingAssetDTO> getById(UUID leasingAgreementId, UUID leasingAssetId) {
         return repository.findById(leasingAssetId)
                 .filter(asset -> leasingAgreementId.equals(asset.getLeasingAgreementId()))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<LeasingAssetDTO> update(Long leasingAgreementId, Long leasingAssetId, LeasingAssetDTO dto) {
+    public Mono<LeasingAssetDTO> update(UUID leasingAgreementId, UUID leasingAssetId, LeasingAssetDTO dto) {
         return repository.findById(leasingAssetId)
                 .filter(asset -> leasingAgreementId.equals(asset.getLeasingAgreementId()))
                 .flatMap(existingAsset -> {
@@ -66,7 +67,7 @@ public class LeasingAssetServiceImpl implements LeasingAssetService {
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId, Long leasingAssetId) {
+    public Mono<Void> delete(UUID leasingAgreementId, UUID leasingAssetId) {
         return repository.findById(leasingAssetId)
                 .filter(asset -> leasingAgreementId.equals(asset.getLeasingAgreementId()))
                 .flatMap(repository::delete);

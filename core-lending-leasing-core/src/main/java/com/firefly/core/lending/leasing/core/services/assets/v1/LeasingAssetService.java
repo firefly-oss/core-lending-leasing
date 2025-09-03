@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.leasing.interfaces.dtos.assets.v1.LeasingAssetDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 public interface LeasingAssetService {
 
     /**
@@ -15,7 +16,7 @@ public interface LeasingAssetService {
      * @param filterRequest the filtering and pagination criteria used to retrieve the leasing assets
      * @return a reactive Mono containing a PaginationResponse with a list of LeasingAssetDTO objects
      */
-    Mono<PaginationResponse<LeasingAssetDTO>> findAll(Long leasingAgreementId,
+    Mono<PaginationResponse<LeasingAssetDTO>> findAll(UUID leasingAgreementId,
                                                       FilterRequest<LeasingAssetDTO> filterRequest);
 
     /**
@@ -25,7 +26,7 @@ public interface LeasingAssetService {
      * @param dto the data transfer object containing the details of the leasing asset to be created
      * @return a Mono emitting the created LeasingAssetDTO object upon successful creation
      */
-    Mono<LeasingAssetDTO> create(Long leasingAgreementId, LeasingAssetDTO dto);
+    Mono<LeasingAssetDTO> create(UUID leasingAgreementId, LeasingAssetDTO dto);
 
     /**
      * Retrieves a specific Leasing Asset by its associated Leasing Agreement ID and Leasing Asset ID.
@@ -34,7 +35,7 @@ public interface LeasingAssetService {
      * @param leasingAssetId the unique identifier of the leasing asset to be retrieved
      * @return a Mono emitting the LeasingAssetDTO corresponding to the provided IDs, or empty if not found
      */
-    Mono<LeasingAssetDTO> getById(Long leasingAgreementId, Long leasingAssetId);
+    Mono<LeasingAssetDTO> getById(UUID leasingAgreementId, UUID leasingAssetId);
 
     /**
      * Updates an existing leasing asset associated with a specific leasing agreement.
@@ -44,7 +45,7 @@ public interface LeasingAssetService {
      * @param dto the data transfer object containing updated details for the leasing asset
      * @return a Mono emitting the updated LeasingAssetDTO upon successful update
      */
-    Mono<LeasingAssetDTO> update(Long leasingAgreementId, Long leasingAssetId, LeasingAssetDTO dto);
+    Mono<LeasingAssetDTO> update(UUID leasingAgreementId, UUID leasingAssetId, LeasingAssetDTO dto);
 
     /**
      * Deletes a leasing asset associated with a specific leasing agreement.
@@ -53,5 +54,5 @@ public interface LeasingAssetService {
      * @param leasingAssetId the unique identifier of the leasing asset to be deleted
      * @return a Mono signaling the completion of the deletion process
      */
-    Mono<Void> delete(Long leasingAgreementId, Long leasingAssetId);
+    Mono<Void> delete(UUID leasingAgreementId, UUID leasingAssetId);
 }

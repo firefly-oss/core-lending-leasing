@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @Service
 @Transactional
 public class LeaseServiceEventServiceImpl implements LeaseServiceEventService {
@@ -23,7 +24,7 @@ public class LeaseServiceEventServiceImpl implements LeaseServiceEventService {
     private LeaseServiceEventMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<LeaseServiceEventDTO>> findAll(Long leasingAgreementId, Long leasingAssetId, FilterRequest<LeaseServiceEventDTO> filterRequest) {
+    public Mono<PaginationResponse<LeaseServiceEventDTO>> findAll(UUID leasingAgreementId, UUID leasingAssetId, FilterRequest<LeaseServiceEventDTO> filterRequest) {
         filterRequest.getFilters().setLeasingAssetId(leasingAssetId);
         return FilterUtils.createFilter(
                 LeaseServiceEvent.class,
@@ -32,7 +33,7 @@ public class LeaseServiceEventServiceImpl implements LeaseServiceEventService {
     }
 
     @Override
-    public Mono<LeaseServiceEventDTO> create(Long leasingAgreementId, Long leasingAssetId, LeaseServiceEventDTO dto) {
+    public Mono<LeaseServiceEventDTO> create(UUID leasingAgreementId, UUID leasingAssetId, LeaseServiceEventDTO dto) {
         LeaseServiceEvent entity = mapper.toEntity(dto);
         entity.setLeasingAssetId(leasingAssetId);
         return Mono.from(repository.save(entity))
@@ -40,14 +41,14 @@ public class LeaseServiceEventServiceImpl implements LeaseServiceEventService {
     }
 
     @Override
-    public Mono<LeaseServiceEventDTO> getById(Long leasingAgreementId, Long leasingAssetId, Long leaseServiceEventId) {
+    public Mono<LeaseServiceEventDTO> getById(UUID leasingAgreementId, UUID leasingAssetId, UUID leaseServiceEventId) {
         return Mono.from(repository.findById(leaseServiceEventId))
                 .filter(event -> event.getLeasingAssetId().equals(leasingAssetId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<LeaseServiceEventDTO> update(Long leasingAgreementId, Long leasingAssetId, Long leaseServiceEventId, LeaseServiceEventDTO dto) {
+    public Mono<LeaseServiceEventDTO> update(UUID leasingAgreementId, UUID leasingAssetId, UUID leaseServiceEventId, LeaseServiceEventDTO dto) {
         return Mono.from(repository.findById(leaseServiceEventId))
                 .filter(event -> event.getLeasingAssetId().equals(leasingAssetId))
                 .flatMap(existingEvent -> {
@@ -61,7 +62,7 @@ public class LeaseServiceEventServiceImpl implements LeaseServiceEventService {
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId, Long leasingAssetId, Long leaseServiceEventId) {
+    public Mono<Void> delete(UUID leasingAgreementId, UUID leasingAssetId, UUID leaseServiceEventId) {
         return Mono.from(repository.findById(leaseServiceEventId))
                 .filter(event -> event.getLeasingAssetId().equals(leasingAssetId))
                 .flatMap(event -> Mono.from(repository.delete(event)));

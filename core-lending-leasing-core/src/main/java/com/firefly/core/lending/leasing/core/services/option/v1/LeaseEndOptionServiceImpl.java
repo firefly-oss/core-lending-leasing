@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @Service
 @Transactional
 public class LeaseEndOptionServiceImpl implements LeaseEndOptionService {
@@ -20,13 +21,13 @@ public class LeaseEndOptionServiceImpl implements LeaseEndOptionService {
     private LeaseEndOptionMapper mapper;
 
     @Override
-    public Mono<LeaseEndOptionDTO> getByAgreement(Long leasingAgreementId) {
+    public Mono<LeaseEndOptionDTO> getByAgreement(UUID leasingAgreementId) {
         return repository.findByLeasingAgreementId(leasingAgreementId)
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<LeaseEndOptionDTO> create(Long leasingAgreementId, LeaseEndOptionDTO dto) {
+    public Mono<LeaseEndOptionDTO> create(UUID leasingAgreementId, LeaseEndOptionDTO dto) {
         LeaseEndOption entity = mapper.toEntity(dto);
         entity.setLeasingAgreementId(leasingAgreementId);
         return repository.save(entity)
@@ -34,7 +35,7 @@ public class LeaseEndOptionServiceImpl implements LeaseEndOptionService {
     }
 
     @Override
-    public Mono<LeaseEndOptionDTO> update(Long leasingAgreementId, LeaseEndOptionDTO dto) {
+    public Mono<LeaseEndOptionDTO> update(UUID leasingAgreementId, LeaseEndOptionDTO dto) {
         return repository.findByLeasingAgreementId(leasingAgreementId)
                 .flatMap(existingEntity -> {
                     LeaseEndOption updatedEntity = mapper.toEntity(dto);
@@ -46,7 +47,7 @@ public class LeaseEndOptionServiceImpl implements LeaseEndOptionService {
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId) {
+    public Mono<Void> delete(UUID leasingAgreementId) {
         return repository.findByLeasingAgreementId(leasingAgreementId)
                 .flatMap(repository::delete);
     }

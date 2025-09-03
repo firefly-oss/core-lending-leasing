@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 @Service
 @Transactional
 public class LeasePaymentRecordServiceImpl implements LeasePaymentRecordService {
@@ -23,7 +24,7 @@ public class LeasePaymentRecordServiceImpl implements LeasePaymentRecordService 
     private LeasePaymentRecordMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<LeasePaymentRecordDTO>> findAll(Long leasingAgreementId, FilterRequest<LeasePaymentRecordDTO> filterRequest) {
+    public Mono<PaginationResponse<LeasePaymentRecordDTO>> findAll(UUID leasingAgreementId, FilterRequest<LeasePaymentRecordDTO> filterRequest) {
         filterRequest.getFilters().setLeasingAgreementId(leasingAgreementId);
         return FilterUtils.createFilter(
                 LeasePaymentRecord.class,
@@ -32,7 +33,7 @@ public class LeasePaymentRecordServiceImpl implements LeasePaymentRecordService 
     }
 
     @Override
-    public Mono<LeasePaymentRecordDTO> create(Long leasingAgreementId, LeasePaymentRecordDTO dto) {
+    public Mono<LeasePaymentRecordDTO> create(UUID leasingAgreementId, LeasePaymentRecordDTO dto) {
         dto.setLeasingAgreementId(leasingAgreementId);
         LeasePaymentRecord entity = mapper.toEntity(dto);
         return repository.save(entity)
@@ -40,14 +41,14 @@ public class LeasePaymentRecordServiceImpl implements LeasePaymentRecordService 
     }
 
     @Override
-    public Mono<LeasePaymentRecordDTO> getById(Long leasingAgreementId, Long leasePaymentRecordId) {
+    public Mono<LeasePaymentRecordDTO> getById(UUID leasingAgreementId, UUID leasePaymentRecordId) {
         return repository.findById(leasePaymentRecordId)
                 .filter(record -> record.getLeasingAgreementId().equals(leasingAgreementId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<LeasePaymentRecordDTO> update(Long leasingAgreementId, Long leasePaymentRecordId, LeasePaymentRecordDTO dto) {
+    public Mono<LeasePaymentRecordDTO> update(UUID leasingAgreementId, UUID leasePaymentRecordId, LeasePaymentRecordDTO dto) {
         return repository.findById(leasePaymentRecordId)
                 .filter(record -> record.getLeasingAgreementId().equals(leasingAgreementId))
                 .flatMap(existingRecord -> {
@@ -60,7 +61,7 @@ public class LeasePaymentRecordServiceImpl implements LeasePaymentRecordService 
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId, Long leasePaymentRecordId) {
+    public Mono<Void> delete(UUID leasingAgreementId, UUID leasePaymentRecordId) {
         return repository.findById(leasePaymentRecordId)
                 .filter(record -> record.getLeasingAgreementId().equals(leasingAgreementId))
                 .flatMap(repository::delete);

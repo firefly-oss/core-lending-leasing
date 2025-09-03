@@ -5,6 +5,8 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.leasing.interfaces.dtos.agreement.v1.LeasingAgreementDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 public interface LeasingAgreementService {
 
     /**
@@ -29,7 +31,7 @@ public interface LeasingAgreementService {
      * @param leasingAgreementId the unique identifier of the leasing agreement to be retrieved
      * @return a {@link Mono} containing the {@code LeasingAgreementDTO} if found, or empty if not found
      */
-    Mono<LeasingAgreementDTO> getById(Long leasingAgreementId);
+    Mono<LeasingAgreementDTO> getById(UUID leasingAgreementId);
 
     /**
      * Updates an existing leasing agreement with the specified details.
@@ -38,7 +40,7 @@ public interface LeasingAgreementService {
      * @param dto the data transfer object containing updated details for the leasing agreement
      * @return a Mono emitting the updated LeasingAgreementDTO upon successful update
      */
-    Mono<LeasingAgreementDTO> update(Long leasingAgreementId, LeasingAgreementDTO dto);
+    Mono<LeasingAgreementDTO> update(UUID leasingAgreementId, LeasingAgreementDTO dto);
 
     /**
      * Deletes the leasing agreement identified by the provided leasing agreement ID.
@@ -46,5 +48,5 @@ public interface LeasingAgreementService {
      * @param leasingAgreementId the ID of the leasing agreement to be deleted
      * @return a Mono signaling when the deletion is completed
      */
-    Mono<Void> delete(Long leasingAgreementId);
+    Mono<Void> delete(UUID leasingAgreementId);
 }

@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.leasing.interfaces.dtos.event.v1.LeaseServiceEventDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 public interface LeaseServiceEventService {
 
     /**
@@ -17,8 +18,8 @@ public interface LeaseServiceEventService {
      * @return a Mono emitting a PaginationResponse containing a list of LeaseServiceEventDTO objects
      *         that match the given criteria
      */
-    Mono<PaginationResponse<LeaseServiceEventDTO>> findAll(Long leasingAgreementId,
-                                                           Long leasingAssetId,
+    Mono<PaginationResponse<LeaseServiceEventDTO>> findAll(UUID leasingAgreementId,
+                                                           UUID leasingAssetId,
                                                            FilterRequest<LeaseServiceEventDTO> filterRequest);
 
     /**
@@ -29,8 +30,8 @@ public interface LeaseServiceEventService {
      * @param dto the data transfer object containing the details of the lease service event to be created
      * @return a Mono emitting the created LeaseServiceEventDTO object upon successful creation
      */
-    Mono<LeaseServiceEventDTO> create(Long leasingAgreementId,
-                                      Long leasingAssetId,
+    Mono<LeaseServiceEventDTO> create(UUID leasingAgreementId,
+                                      UUID leasingAssetId,
                                       LeaseServiceEventDTO dto);
 
     /**
@@ -42,9 +43,9 @@ public interface LeaseServiceEventService {
      * @param leaseServiceEventId the unique identifier of the lease service event to retrieve
      * @return a Mono emitting the LeaseServiceEventDTO corresponding to the provided IDs, or empty if not found
      */
-    Mono<LeaseServiceEventDTO> getById(Long leasingAgreementId,
-                                       Long leasingAssetId,
-                                       Long leaseServiceEventId);
+    Mono<LeaseServiceEventDTO> getById(UUID leasingAgreementId,
+                                       UUID leasingAssetId,
+                                       UUID leaseServiceEventId);
 
     /**
      * Updates an existing lease service event associated with the specified leasing agreement and asset.
@@ -55,9 +56,9 @@ public interface LeaseServiceEventService {
      * @param dto the data transfer object containing the updated details for the lease service event
      * @return a Mono emitting the updated LeaseServiceEventDTO object upon successful update
      */
-    Mono<LeaseServiceEventDTO> update(Long leasingAgreementId,
-                                      Long leasingAssetId,
-                                      Long leaseServiceEventId,
+    Mono<LeaseServiceEventDTO> update(UUID leasingAgreementId,
+                                      UUID leasingAssetId,
+                                      UUID leaseServiceEventId,
                                       LeaseServiceEventDTO dto);
 
     /**
@@ -69,7 +70,7 @@ public interface LeaseServiceEventService {
      * @param leaseServiceEventId the unique identifier of the lease service event to be deleted
      * @return a Mono signaling the completion of the deletion operation
      */
-    Mono<Void> delete(Long leasingAgreementId,
-                      Long leasingAssetId,
-                      Long leaseServiceEventId);
+    Mono<Void> delete(UUID leasingAgreementId,
+                      UUID leasingAssetId,
+                      UUID leaseServiceEventId);
 }

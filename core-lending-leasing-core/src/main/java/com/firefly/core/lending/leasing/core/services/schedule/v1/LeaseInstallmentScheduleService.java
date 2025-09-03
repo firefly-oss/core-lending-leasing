@@ -5,6 +5,7 @@ import com.firefly.common.core.queries.PaginationResponse;
 import com.firefly.core.lending.leasing.interfaces.dtos.schedule.v1.LeaseInstallmentScheduleDTO;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 public interface LeaseInstallmentScheduleService {
 
     /**
@@ -15,7 +16,7 @@ public interface LeaseInstallmentScheduleService {
      * @param filterRequest the filtering and pagination criteria used to retrieve the lease installment schedules
      * @return a reactive Mono containing a PaginationResponse with a list of LeaseInstallmentScheduleDTO objects
      */
-    Mono<PaginationResponse<LeaseInstallmentScheduleDTO>> findAll(Long leasingAgreementId,
+    Mono<PaginationResponse<LeaseInstallmentScheduleDTO>> findAll(UUID leasingAgreementId,
                                                                   FilterRequest<LeaseInstallmentScheduleDTO> filterRequest);
 
     /**
@@ -25,7 +26,7 @@ public interface LeaseInstallmentScheduleService {
      * @param dto the data transfer object containing the details of the lease installment schedule to be created
      * @return a Mono emitting the created LeaseInstallmentScheduleDTO object upon successful creation
      */
-    Mono<LeaseInstallmentScheduleDTO> create(Long leasingAgreementId, LeaseInstallmentScheduleDTO dto);
+    Mono<LeaseInstallmentScheduleDTO> create(UUID leasingAgreementId, LeaseInstallmentScheduleDTO dto);
 
     /**
      * Retrieves a specific Lease Installment Schedule by its associated Leasing Agreement ID
@@ -35,7 +36,7 @@ public interface LeaseInstallmentScheduleService {
      * @param leaseInstallmentScheduleId the unique identifier of the lease installment schedule to be retrieved
      * @return a Mono emitting the LeaseInstallmentScheduleDTO corresponding to the provided IDs, or empty if not found
      */
-    Mono<LeaseInstallmentScheduleDTO> getById(Long leasingAgreementId, Long leaseInstallmentScheduleId);
+    Mono<LeaseInstallmentScheduleDTO> getById(UUID leasingAgreementId, UUID leaseInstallmentScheduleId);
 
     /**
      * Updates an existing lease installment schedule associated with a specific leasing agreement.
@@ -45,7 +46,7 @@ public interface LeaseInstallmentScheduleService {
      * @param dto the data transfer object containing updated details for the lease installment schedule
      * @return a Mono emitting the updated LeaseInstallmentScheduleDTO upon successful update
      */
-    Mono<LeaseInstallmentScheduleDTO> update(Long leasingAgreementId, Long leaseInstallmentScheduleId,
+    Mono<LeaseInstallmentScheduleDTO> update(UUID leasingAgreementId, UUID leaseInstallmentScheduleId,
                                              LeaseInstallmentScheduleDTO dto);
 
     /**
@@ -55,5 +56,5 @@ public interface LeaseInstallmentScheduleService {
      * @param leaseInstallmentScheduleId the unique identifier of the lease installment schedule to be deleted
      * @return a Mono signaling the completion of the deletion process
      */
-    Mono<Void> delete(Long leasingAgreementId, Long leaseInstallmentScheduleId);
+    Mono<Void> delete(UUID leasingAgreementId, UUID leaseInstallmentScheduleId);
 }

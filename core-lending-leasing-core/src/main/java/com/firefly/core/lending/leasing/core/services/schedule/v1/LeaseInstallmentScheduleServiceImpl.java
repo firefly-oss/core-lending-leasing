@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 import java.time.LocalDateTime;
 
 @Service
@@ -25,7 +26,7 @@ public class LeaseInstallmentScheduleServiceImpl implements LeaseInstallmentSche
     private LeaseInstallmentScheduleMapper mapper;
 
     @Override
-    public Mono<PaginationResponse<LeaseInstallmentScheduleDTO>> findAll(Long leasingAgreementId, FilterRequest<LeaseInstallmentScheduleDTO> filterRequest) {
+    public Mono<PaginationResponse<LeaseInstallmentScheduleDTO>> findAll(UUID leasingAgreementId, FilterRequest<LeaseInstallmentScheduleDTO> filterRequest) {
         filterRequest.getFilters().setLeasingAgreementId(leasingAgreementId);
         return FilterUtils.createFilter(
                 LeaseInstallmentSchedule.class,
@@ -34,7 +35,7 @@ public class LeaseInstallmentScheduleServiceImpl implements LeaseInstallmentSche
     }
 
     @Override
-    public Mono<LeaseInstallmentScheduleDTO> create(Long leasingAgreementId, LeaseInstallmentScheduleDTO dto) {
+    public Mono<LeaseInstallmentScheduleDTO> create(UUID leasingAgreementId, LeaseInstallmentScheduleDTO dto) {
         dto.setLeasingAgreementId(leasingAgreementId);
         LeaseInstallmentSchedule entity = mapper.toEntity(dto);
         entity.setCreatedAt(LocalDateTime.now());
@@ -44,14 +45,14 @@ public class LeaseInstallmentScheduleServiceImpl implements LeaseInstallmentSche
     }
 
     @Override
-    public Mono<LeaseInstallmentScheduleDTO> getById(Long leasingAgreementId, Long leaseInstallmentScheduleId) {
+    public Mono<LeaseInstallmentScheduleDTO> getById(UUID leasingAgreementId, UUID leaseInstallmentScheduleId) {
         return repository.findById(leaseInstallmentScheduleId)
                 .filter(entity -> entity.getLeasingAgreementId().equals(leasingAgreementId))
                 .map(mapper::toDTO);
     }
 
     @Override
-    public Mono<LeaseInstallmentScheduleDTO> update(Long leasingAgreementId, Long leaseInstallmentScheduleId, LeaseInstallmentScheduleDTO dto) {
+    public Mono<LeaseInstallmentScheduleDTO> update(UUID leasingAgreementId, UUID leaseInstallmentScheduleId, LeaseInstallmentScheduleDTO dto) {
         return repository.findById(leaseInstallmentScheduleId)
                 .filter(entity -> entity.getLeasingAgreementId().equals(leasingAgreementId))
                 .flatMap(existingEntity -> {
@@ -65,7 +66,7 @@ public class LeaseInstallmentScheduleServiceImpl implements LeaseInstallmentSche
     }
 
     @Override
-    public Mono<Void> delete(Long leasingAgreementId, Long leaseInstallmentScheduleId) {
+    public Mono<Void> delete(UUID leasingAgreementId, UUID leaseInstallmentScheduleId) {
         return repository.findById(leaseInstallmentScheduleId)
                 .filter(entity -> entity.getLeasingAgreementId().equals(leasingAgreementId))
                 .flatMap(repository::delete);
